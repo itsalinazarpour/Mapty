@@ -1,0 +1,68 @@
+.workout {
+  background-color: var(--color-dark--2);
+  color: var(--color-white);
+  border-radius: 5px;
+  padding: 1.5rem 2.75rem;
+  height: 9.25rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 1.5rem;
+  grid-row-gap: 0.75rem;
+  transition: all 0.2s;
+
+  &__cycling {
+    border-left: 5px solid var(--color-brand--1);
+  }
+
+  &__running {
+    border-left: 5px solid var(--color-brand--2);
+  }
+
+  &__title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    grid-column: 1 / 4;
+    align-self: center;
+  }
+
+  &__icon {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--color-light--1);
+    border-radius: 100px;
+    grid-column: 4 / -1;
+    align-self: center;
+    justify-self: end;
+    transition: all 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      fill: var(--color-white);
+      background-color: rgba($color-dark--1, 0.3);
+    }
+  }
+
+  &__details {
+    display: flex;
+    align-items: baseline;
+  }
+
+  &__imoji {
+    margin-right: 0.5rem;
+  }
+
+  &__value {
+    font-size: 1.4rem;
+    margin-right: 0.2rem;
+  }
+
+  &__unit {
+    font-size: 1rem;
+    color: var(--color-light--1);
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+}

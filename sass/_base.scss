@@ -12,6 +12,10 @@
   --color-white: #fff;
 }
 
+$color-light--1: #aaa;
+$color-dark--1: #2d3439;
+$color-dark--2: #42484d;
+
 *,
 *::before,
 *::after {
@@ -38,6 +42,18 @@ body {
 
 .side-bar {
   background-color: var(--color-dark--1);
+}
+
+.copyright {
+  font-size: 1.3rem;
+  text-align: center;
+  color: var(--color-light--1);
+  margin-top: auto;
+
+  span {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 #map {

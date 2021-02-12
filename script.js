@@ -3,6 +3,7 @@
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
+  sortToggle = false; // TRUE = DISTANCE, FALSE = DATE
 
   constructor(coords, distance, duration) {
     this.coords = coords; // [lat, lng]
@@ -289,7 +290,19 @@ class App {
                 <svg class="menu__icon">
                   <use xlink:href="sprite.svg#icon-trash"></use>
                 </svg>
-                <span>Delete from list</span>
+                <span>Delete this list</span>
+              </li>
+              <li class="menu__item menu__item--clear">
+                <svg class="menu__icon">
+                  <use xlink:href="sprite.svg#icon-trash"></use>
+                </svg>
+                <span>Clear all</span>
+              </li>
+              <li class="menu__item menu__item--sort">
+                <svg class="menu__icon">
+                  <use xlink:href="sprite.svg#icon-chevron-down"></use>
+                </svg>
+                <span>Sort by</span><span class="menu__sort--text">(km, date)</span>
               </li>
             </ul>
           </div>
@@ -468,7 +481,39 @@ class App {
     if (menuItem.classList.contains('menu__item--delete'))
       this._deleteWorkout(e);
 
+    // CLICK ON CLEAR BUTTON, CLEAR ALL
+    if (menuItem.classList.contains('menu__item--clear'))
+      this._clearLocalStorage();
+
+    // CLICK ON SORT BUTTON, SORT LISTS BY DISTANCE
+    if (menuItem.classList.contains('menu__item--sort')) {
+      this._sortWorkout(this._selectedWorkout);
+    }
+
     this._closeMenu();
+  }
+
+  _sortWorkout(workout) {
+    workout.sortToggle ? this._sortByDate() : this._sortByDistance();
+
+    this._setLocalStorage();
+    location.reload();
+
+    console.log(this._workouts);
+  }
+
+  _sortByDistance() {
+    this._workouts.sort((a, b) => a.distance - b.distance);
+
+    this._workouts.forEach((workout) => (workout.sortToggle = true));
+  }
+
+  _sortByDate() {
+    this._workouts.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    this._workouts.forEach((workout) => (workout.sortToggle = false));
   }
 
   // DELETE LIST FROM LOCAL STORAGE, WORKOUT ARRAY AND RELOAD PAGE
@@ -512,7 +557,7 @@ class App {
     this._workouts.forEach((work) => this._renderWorkout(work));
   }
 
-  clearLocalStorage() {
+  _clearLocalStorage() {
     localStorage.removeItem('workouts');
     location.reload();
   }

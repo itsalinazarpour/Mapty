@@ -1,3 +1,7 @@
 @import 'base';
-@import 'sidebar';
 @import 'typography';
+
+@import 'sidebar/sidebar';
+@import 'sidebar/form';
+@import 'sidebar/workout';
+@import 'sidebar/menu';

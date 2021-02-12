@@ -1,0 +1,55 @@
+.form {
+  background-color: var(--color-dark--2);
+  color: var(--color-white);
+  border-radius: 5px;
+  padding: 1.5rem 2.75rem;
+  height: 9.25rem;
+  margin-bottom: 1.5rem;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 2.5rem;
+  transition: all 0.5s, transform 1ms;
+
+  &.hidden {
+    transform: translateY(-30rem);
+    height: 0;
+    padding: 0 2.25rem;
+    margin-bottom: 0;
+    opacity: 0;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+
+  &__label {
+    flex: 0 0 50%;
+    font-weight: 500;
+  }
+
+  &__input {
+    background-color: var(--color-light--3);
+    width: 8rem;
+    padding: 0.3rem 1.1rem;
+    font-family: inherit;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 3px;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      background-color: var(--color-white);
+    }
+  }
+
+  &__btn {
+    display: none;
+  }
+}
+
+.form__row--hidden {
+  display: none;
+}
