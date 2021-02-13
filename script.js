@@ -87,7 +87,9 @@ class App {
 
     form.addEventListener('submit', this._controlWokrout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
-    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+    // prettier-ignore
+    containerWorkouts.addEventListener('click', this._moveToPopupOnList.bind(this));
+    containerMap.addEventListener('click', this._moveToPopupOnMap.bind(this));
     sidebar.addEventListener('click', this._closeMenuOnClickOutside.bind(this));
     sidebar.addEventListener('click', this._renderMenu.bind(this));
     containerWorkouts.addEventListener('click', this._controlMenu.bind(this));
@@ -124,6 +126,10 @@ class App {
 
     // RENDER MARKER AFTER LOADING A MAP
     this._workouts.forEach((work) => this._renderWorkoutMarker(work));
+
+    // ZOOM TO FIT ALL WORKOUT MARKERS
+    const allCoords = this._workouts.map((workout) => workout.coords);
+    this._map.fitBounds(allCoords, { padding: [100, 100] });
   }
 
   // DESCRIPTION FROM DATE AND TYPE OF WORKOUT
@@ -146,7 +152,6 @@ class App {
     form.classList.remove('hidden');
     this._clearInputFields();
     inputDistance.focus();
-
     // mapE = EVENT TO GET LOCATION FROM LEAFLET MAP
     this._mapEvent = mapE;
   }
@@ -481,7 +486,7 @@ class App {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
   }
   // CLICK ON LIST MOVE MAP TO THE CORRESPONDING POP-UP
-  _moveToPopup(e) {
+  _moveToPopupOnList(e) {
     const workoutEl = e.target.closest('.workout');
 
     if (!workoutEl) return;
@@ -491,6 +496,27 @@ class App {
     );
 
     this._map.setView(workout.coords, this._mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+  }
+
+  // CLICK POP-UP CONTENT ON MAP  MOVE MAP TO THE CORRESPONDING POP-UP
+  _moveToPopupOnMap(e) {
+    const popup = e.target.closest('.leaflet-popup');
+
+    if (!popup) return;
+
+    // leaflet-popup running-popup 3201455437 leaflet-zoom-animated
+    const selectedWorkout = this._workouts.find(
+      (work) =>
+        `leaflet-popup ${work.type}-popup ${work.id} leaflet-zoom-animated` ===
+        popup.className
+    );
+
+    this._map.setView(selectedWorkout.coords, this._mapZoomLevel, {
       animate: true,
       pan: {
         duration: 1,
