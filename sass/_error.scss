@@ -1,0 +1,22 @@
+.error {
+  &__heading {
+    font-size: 5rem;
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__text {
+    font-weight: 600;
+    font-size: 2rem;
+  }
+
+  &__btn--close {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    border: 0;
+    background-color: inherit;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+}

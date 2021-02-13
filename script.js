@@ -67,6 +67,9 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+const btnClose = document.querySelector('.error__btn--close');
+const windowError = document.querySelector('.error-window');
+const overlay = document.querySelector('.overlay');
 
 class App {
   _map;
@@ -88,6 +91,8 @@ class App {
     sidebar.addEventListener('click', this._closeMenuOnClickOutside.bind(this));
     sidebar.addEventListener('click', this._renderMenu.bind(this));
     containerWorkouts.addEventListener('click', this._controlMenu.bind(this));
+    btnClose.addEventListener('click', this._closeErrorMsg);
+    overlay.addEventListener('click', this._closeErrorMsg);
   }
 
   // GET POSITION FROM GEO API
@@ -135,11 +140,11 @@ class App {
   _showBrandNewForm(mapE) {
     this._showForm(mapE);
     this._editChecker = false;
-    this._clearInputFields();
   }
 
   _showForm(mapE) {
     form.classList.remove('hidden');
+    this._clearInputFields();
     inputDistance.focus();
 
     // mapE = EVENT TO GET LOCATION FROM LEAFLET MAP
@@ -184,8 +189,14 @@ class App {
       '';
   }
 
-  _displayError() {
-    console.log('error');
+  _closeErrorMsg() {
+    overlay.classList.add('hidden');
+    windowError.classList.add('hidden');
+  }
+
+  _displayErrorMsg() {
+    overlay.classList.remove('hidden');
+    windowError.classList.remove('hidden');
   }
 
   _controlWokrout(e) {
@@ -222,7 +233,7 @@ class App {
         !isNumber(duration, distance, cadence) ||
         !isPositive(duration, distance, cadence)
       )
-        return this._displayError();
+        return this._displayErrorMsg();
 
       workout.cadence = cadence;
       workout.pace = duration / distance;
@@ -232,7 +243,7 @@ class App {
         !isNumber(duration, distance, elevation) ||
         !isPositive(duration, distance)
       )
-        return this._displayError();
+        return this._displayErrorMsg();
 
       workout.elevationGain = elevation;
       workout.speed = distance / (duration / 60);
@@ -267,7 +278,7 @@ class App {
         !isNumber(duration, distance, cadence) ||
         !isPositive(duration, distance, cadence)
       )
-        return this._displayError();
+        return this._displayErrorMsg();
 
       workout = new Running([lat, lng], distance, duration, cadence);
     }
@@ -279,7 +290,7 @@ class App {
         !isNumber(duration, distance, elevation) ||
         !isPositive(duration, distance)
       )
-        return this._displayError();
+        return this._displayErrorMsg();
 
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
@@ -323,7 +334,7 @@ class App {
                 <svg class="menu__icon">
                   <use xlink:href="sprite.svg#icon-trash"></use>
                 </svg>
-                <span>Clear all</span>
+                <span>Clear all lists</span>
               </li>
               <li class="menu__item menu__item--sort">
                 <svg class="menu__icon">
