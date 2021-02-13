@@ -131,6 +131,13 @@ class App {
     return description;
   }
 
+  // SHOW NEW FORM WHEN EDIT FORM IS OPENED AND CLEAR INPUT FIELDS
+  _showBrandNewForm(mapE) {
+    this._showForm(mapE);
+    this._editChecker = false;
+    this._clearInputFields();
+  }
+
   _showForm(mapE) {
     form.classList.remove('hidden');
     inputDistance.focus();
@@ -164,8 +171,7 @@ class App {
 
   _hideForm() {
     // CLEAR INPUT FIELDS
-    inputDuration.value = inputDistance.value = inputCadence.value = inputElevation.value =
-      '';
+    this._clearInputFields();
 
     // TRICK TO PREVENT ANIMATION
     form.style.display = 'none';
@@ -173,18 +179,24 @@ class App {
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
+  _clearInputFields() {
+    inputDuration.value = inputDistance.value = inputCadence.value = inputElevation.value =
+      '';
+  }
+
+  _displayError() {
+    console.log('error');
+  }
+
   _controlWokrout(e) {
     e.preventDefault();
 
     if (this._editChecker === false) {
       this._newWorkout();
-      console.log('new');
     }
     if (this._editChecker === true) {
       this._editWorkout(this._selectedWorkout);
       this._editChecker = false;
-      console.log('edit');
-      console.log(this._selectedWorkout);
     }
   }
 
@@ -195,16 +207,33 @@ class App {
     const cadence = +inputCadence.value;
     const elevation = +inputElevation.value;
 
+    // VALIDATION HELPER FUNCTION
+    const isNumber = (...inputs) =>
+      inputs.every((input) => Number.isFinite(input));
+    const isPositive = (...inputs) => inputs.every((input) => input > 0);
+
     // SET INPUT VALUE IN LOCAL STORAGE
     workout.type = type;
     workout.duration = duration;
     workout.distance = distance;
 
     if (type === 'running') {
+      if (
+        !isNumber(duration, distance, cadence) ||
+        !isPositive(duration, distance, cadence)
+      )
+        return this._displayError();
+
       workout.cadence = cadence;
       workout.pace = duration / distance;
     }
     if (type === 'cycling') {
+      if (
+        !isNumber(duration, distance, elevation) ||
+        !isPositive(duration, distance)
+      )
+        return this._displayError();
+
       workout.elevationGain = elevation;
       workout.speed = distance / (duration / 60);
     }
@@ -216,8 +245,6 @@ class App {
   }
 
   _newWorkout() {
-    // e.preventDefault();
-
     // GET DATA FROM FORM
     const type = inputType.value;
     const duration = +inputDuration.value;
@@ -240,7 +267,7 @@ class App {
         !isNumber(duration, distance, cadence) ||
         !isPositive(duration, distance, cadence)
       )
-        return alert('Inputs must be numbers or positive numbers');
+        return this._displayError();
 
       workout = new Running([lat, lng], distance, duration, cadence);
     }
@@ -252,7 +279,7 @@ class App {
         !isNumber(duration, distance, elevation) ||
         !isPositive(duration, distance)
       )
-        return alert('Inputs must be positive number');
+        return this._displayError();
 
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
@@ -476,6 +503,10 @@ class App {
       this._showEditForm(this._selectedWorkout);
       this._defaultElevationField();
       this._editChecker = true;
+
+      if (this._editChecker) {
+        this._map.on('click', this._showBrandNewForm.bind(this));
+      }
     }
     // CLICK ON DELETE BUTTON, DELETE THE WORKOUT
     if (menuItem.classList.contains('menu__item--delete'))
