@@ -1,5 +1,9 @@
 'use strict';
 
+// What to do ..
+// GEOCODE LOCATION CODE FROM 3RD PARTY API
+// GET WEATHER FROM 3RD PARTY API
+
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
