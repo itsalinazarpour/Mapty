@@ -84,6 +84,7 @@ class App {
   _editChecker = false;
   _selectedWorkout;
   _selectedWorkoutEl;
+  _geodata;
 
   constructor() {
     this._getPosition();
@@ -137,23 +138,32 @@ class App {
     this._map.fitBounds(allCoords, { padding: [150, 150] });
   }
 
+  async _getGeoCode(workout) {
+    try {
+      const [lat, lng] = [...workout.coords];
+      const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+      if (!res.ok) throw new Error(console.error('funcking stupid api'));
+
+      const data = await res.json();
+      console.log(data);
+
+      return data.osmtags.name;
+    } catch {}
+  }
+
   // DESCRIPTION FROM DATE AND TYPE OF WORKOUT
   _setDescription(workout) {
-    if (workout.type === 'running') {
-      const description = `${workout.type
-        .replace(workout.type[0], workout.type[0].toUpperCase())
-        .slice(0, 3)} on ${workout.dateDescription}`;
+    if (workout.type === 'running')
+      return `${workout.type.replace(
+        workout.type[0],
+        workout.type[0].toUpperCase()
+      )} on ${workout.dateDescription}`;
 
-      return description;
-    }
-
-    if (workout.type === 'cycling') {
-      const description = `${workout.type.replace(workout.type, 'Cycle')} on ${
-        workout.dateDescription
-      }`;
-
-      return description;
-    }
+    if (workout.type === 'cycling')
+      return `${workout.type.replace(
+        workout.type[0],
+        workout.type[0].toUpperCase()
+      )} on ${workout.dateDescription}`;
   }
 
   // SHOW NEW FORM WHEN EDIT FORM IS OPENED AND CLEAR INPUT FIELDS
@@ -335,9 +345,9 @@ class App {
     this._setLocalStorage();
   }
 
-  _renderWorkout(workout) {
+  async _renderWorkout(workout) {
+    const data = await this._getGeoCode(workout);
     // APPLICABLE HTML FOR BOTH
-
     let html = `
       <li class="workout workout__${workout.type}" data-id="${workout.id}">
           <div class="menu menu__hidden">
@@ -369,7 +379,10 @@ class App {
             </ul>
           </div>
 
-          <h2 class="workout__title">${this._setDescription(workout)}</h2>
+          <h2 class="workout__title">${this._setDescription(workout)}${
+      data ? ',' : ''
+    } ${data || ''}
+          </h2>
           <svg class="workout__icon">
             <use xlink:href="sprite.svg#icon-dots-three-horizontal"></use>
           </svg>
@@ -456,7 +469,7 @@ class App {
           className: `${workout.type}-popup ${workout.id}`,
         })
       )
-      .setPopupContent(`${this._setDescription(workout)}`)
+      .setPopupContent(this._setDescription(workout))
       .openPopup();
   }
 
@@ -629,13 +642,6 @@ class App {
     // DELETE SLECTED WORKOUT FROM THE WORKOUTS ARR
     this._workouts = this._workouts.filter((work) => work.id !== id);
     this._setLocalStorage();
-  }
-
-  async _getGeoCode(lat, lng) {
-    const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-    const data = await res.json();
-
-    return data;
   }
 
   _setLocalStorage() {
