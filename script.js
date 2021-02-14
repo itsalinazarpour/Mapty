@@ -17,7 +17,7 @@ class Workout {
 
   _setDateDescription() {
     //prettier-ignore
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     this.dateDescription = `${
       months[this.date.getMonth()]
@@ -74,6 +74,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 const btnClose = document.querySelector('.error__btn--close');
 const windowError = document.querySelector('.error-window');
 const overlay = document.querySelector('.overlay');
+const textError = document.querySelector('.error__text');
 
 class App {
   _map;
@@ -104,11 +105,9 @@ class App {
   // GET POSITION FROM GEO API
   _getPosition() {
     if (navigator.geolocation)
-      navigator.geolocation.getCurrentPosition(
-        this._loadMap.bind(this),
-        function () {
-          alert('Could not get your current position');
-        }
+      navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), () =>
+        // prettier-ignore
+        this._displayErrorMsg('Fail to load your position. </br>Please allow location access of this site to access your location🗺')
       );
   }
 
@@ -132,18 +131,29 @@ class App {
     this._workouts.forEach((work) => this._renderWorkoutMarker(work));
 
     // ZOOM TO FIT ALL WORKOUT MARKERS
+    if (this._workouts.length === [].length) return;
+
     const allCoords = this._workouts.map((workout) => workout.coords);
-    this._map.fitBounds(allCoords, { padding: [100, 100] });
+    this._map.fitBounds(allCoords, { padding: [150, 150] });
   }
 
   // DESCRIPTION FROM DATE AND TYPE OF WORKOUT
   _setDescription(workout) {
-    const description = `${workout.type.replace(
-      workout.type[0],
-      workout.type[0].toUpperCase()
-    )} on ${workout.dateDescription}`;
+    if (workout.type === 'running') {
+      const description = `${workout.type
+        .replace(workout.type[0], workout.type[0].toUpperCase())
+        .slice(0, 3)} on ${workout.dateDescription}`;
 
-    return description;
+      return description;
+    }
+
+    if (workout.type === 'cycling') {
+      const description = `${workout.type.replace(workout.type, 'Cycle')} on ${
+        workout.dateDescription
+      }`;
+
+      return description;
+    }
   }
 
   // SHOW NEW FORM WHEN EDIT FORM IS OPENED AND CLEAR INPUT FIELDS
@@ -203,7 +213,12 @@ class App {
     windowError.classList.add('hidden');
   }
 
-  _displayErrorMsg() {
+  _displayErrorMsg(
+    msg = `⚠️ Characters or Symbols and Negative Numbers are NOT allowed for inputs.⚠️ <br />
+  Only Positive Numbers are permitted unless elevation field. <br />
+  On elevation input, Negative number is good to put!😄`
+  ) {
+    textError.innerHTML = msg;
     overlay.classList.remove('hidden');
     windowError.classList.remove('hidden');
   }
@@ -614,6 +629,13 @@ class App {
     // DELETE SLECTED WORKOUT FROM THE WORKOUTS ARR
     this._workouts = this._workouts.filter((work) => work.id !== id);
     this._setLocalStorage();
+  }
+
+  async _getGeoCode(lat, lng) {
+    const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    const data = await res.json();
+
+    return data;
   }
 
   _setLocalStorage() {
