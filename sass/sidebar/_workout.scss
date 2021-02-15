@@ -1,5 +1,5 @@
 .workout {
-  background-color: var(--color-dark--2);
+  background-color: var(--color-dark--4);
   color: var(--color-white);
   border-radius: 5px;
   padding: 1.5rem 2.75rem;
@@ -26,6 +26,16 @@
     font-weight: 600;
     grid-column: 1 / 4;
     align-self: center;
+
+    display: flex;
+    align-items: center;
+  }
+
+  &__weather {
+    height: 3rem;
+    width: auto;
+    display: inline;
+    margin-left: 1rem;
   }
 
   &__icon {

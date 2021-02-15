@@ -1,9 +1,5 @@
 'use strict';
 
-// What to do ..
-// GEOCODE LOCATION CODE FROM 3RD PARTY API
-// GET WEATHER FROM 3RD PARTY API
-
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
@@ -139,11 +135,11 @@ class App {
 
   async _getGeoCode(workout) {
     try {
-      const [lat, lng] = [...workout.coords];
+      const [lat, lng] = workout.coords;
       const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
       if (!res.ok)
         throw new Error(
-          'Please try to reload the page again. This funcking stupid api normally can not read all datas at once and I do not want to pay for the API and that is why this error occurs.'
+          'Please try to reload the page again. Unfortunately, this api can not read all datas at once and I am not willing to pay for the API so that is why this error occurs.'
         );
 
       const data = await res.json();
@@ -350,6 +346,8 @@ class App {
 
   async _renderWorkout(workout) {
     const data = await this._getGeoCode(workout);
+    const weather = await this._getWeather(workout);
+
     // APPLICABLE HTML FOR BOTH
     let html = `
       <li class="workout workout__${workout.type}" data-id="${workout.id}">
@@ -385,7 +383,8 @@ class App {
           <h2 class="workout__title">${this._setDescription(workout)}${
       data ? ',' : ''
     }
-          ${data || ''}
+          ${data || ''} <img class="workout__weather" src="${weather}"/>
+
           </h2>
           <svg class="workout__icon">
             <use xlink:href="sprite.svg#icon-dots-three-horizontal"></use>
@@ -661,13 +660,31 @@ class App {
 
     /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
     for (const work of this._workouts) {
-      const a = await this._renderWorkout(work);
+      await this._renderWorkout(work);
     }
   }
 
   _clearLocalStorage() {
     localStorage.removeItem('workouts');
     location.reload();
+  }
+
+  async _getWeather(workout) {
+    try {
+      const myKey = '5c04291f0b2520cd23ea484f5b1e34e2';
+      const [lat, lng] = workout.coords;
+
+      const res = await fetch(
+        `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}`
+      );
+      if (!res.ok) throw new Error('Failed to load data from API');
+      const data = await res.json();
+      const { icon } = data.weather[0];
+
+      return `http://openweathermap.org/img/wn/${icon}@2x.png`;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 
