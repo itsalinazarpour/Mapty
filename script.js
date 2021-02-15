@@ -84,7 +84,6 @@ class App {
   _editChecker = false;
   _selectedWorkout;
   _selectedWorkoutEl;
-  _geodata;
 
   constructor() {
     this._getPosition();
@@ -142,13 +141,17 @@ class App {
     try {
       const [lat, lng] = [...workout.coords];
       const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-      if (!res.ok) throw new Error(console.error('funcking stupid api'));
+      if (!res.ok)
+        throw new Error(
+          'Please try to reload the page again. This funcking stupid api normally can not read all datas at once and I do not want to pay for the API and that is why this error occurs.'
+        );
 
       const data = await res.json();
-      console.log(data);
 
       return data.osmtags.name;
-    } catch {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // DESCRIPTION FROM DATE AND TYPE OF WORKOUT
@@ -381,7 +384,8 @@ class App {
 
           <h2 class="workout__title">${this._setDescription(workout)}${
       data ? ',' : ''
-    } ${data || ''}
+    }
+          ${data || ''}
           </h2>
           <svg class="workout__icon">
             <use xlink:href="sprite.svg#icon-dots-three-horizontal"></use>
@@ -648,13 +652,17 @@ class App {
     localStorage.setItem('workouts', JSON.stringify(this._workouts));
   }
 
-  _getLocalStorage() {
+  async _getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('workouts'));
 
     if (!data) return;
 
     this._workouts = data;
-    this._workouts.forEach((work) => this._renderWorkout(work));
+
+    /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
+    for (const work of this._workouts) {
+      const a = await this._renderWorkout(work);
+    }
   }
 
   _clearLocalStorage() {
