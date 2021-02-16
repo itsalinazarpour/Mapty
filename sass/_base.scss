@@ -18,6 +18,11 @@ $color-light--1: #aaa;
 $color-dark--1: #2d3439;
 $color-dark--2: #42484d;
 
+$bp-largest: 75em; //1200px
+$bp-medium: 62.5em; // 1000px
+$bp-small: 46.875em; // 750px
+$bp-micro: 31.25em; // 500px
+
 *,
 *::before,
 *::after {
@@ -29,6 +34,10 @@ $color-dark--2: #42484d;
 html {
   font-size: 62.5%; // 1rem = 10px 10 / 16
   box-sizing: border-box;
+
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 50%; // 1rem = 8px
+  }
 }
 
 body {
@@ -40,10 +49,29 @@ body {
 
   display: grid;
   grid-template-columns: 1fr 2fr;
+
+  @media only screen and (max-width: $bp-largest) {
+    padding: 0;
+  }
+
+  @media only screen and (max-width: $bp-small) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .side-bar {
   background-color: var(--color-dark--1);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+
+  @media only screen and (max-width: $bp-small) {
+    height: 35vh;
+  }
+  @media only screen and (max-width: $bp-micro) {
+    height: 45vh;
+  }
 }
 
 .copyright {
@@ -55,6 +83,10 @@ body {
   span {
     text-decoration: underline;
     cursor: pointer;
+  }
+
+  @media only screen and (max-width: $bp-small) {
+    display: none;
   }
 }
 
@@ -98,6 +130,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media only screen and (max-width: $bp-micro) {
+    width: 80%;
+    height: 20rem;
+    justify-content: center;
+  }
 }
 
 .error-window.hidden {

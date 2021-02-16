@@ -4,6 +4,7 @@
   border-radius: 5px;
   padding: 1.5rem 2.75rem;
   min-height: 9.25rem;
+  max-width: 40rem;
   margin-bottom: 1.5rem;
   position: relative;
 
@@ -51,7 +52,7 @@
 
     &:hover {
       fill: var(--color-white);
-      background-color: rgba($color-dark--1, 0.3);
+      background-color: rgba($color-dark--1, 0.15);
     }
   }
 

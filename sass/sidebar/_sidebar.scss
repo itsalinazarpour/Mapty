@@ -1,9 +1,3 @@
-.side-bar {
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-}
-
 .logo {
   height: 5.2rem;
   align-self: center;
@@ -15,4 +9,8 @@
   height: 77vh;
   overflow-y: scroll;
   overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
