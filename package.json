@@ -1,0 +1,29 @@
+{
+  "name": "mapty",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "leaflet": "^1.7.1",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.26.10"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thinkJin6/Mapty.git"
+  },
+  "author": "Jin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thinkJin6/Mapty/issues"
+  },
+  "homepage": "https://github.com/thinkJin6/Mapty#readme",
+  "description": ""
+}

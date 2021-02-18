@@ -1,0 +1,60 @@
+.menu {
+  background-color: var(--color-dark--2);
+  border-radius: 2px;
+  box-shadow: 0 0 0.8rem rgba($color-light--1, 0.3);
+  position: absolute;
+  top: 20%;
+  right: 5%;
+  z-index: 20;
+  transition: opacity 0.5s, transform 0.1s;
+  display: none;
+
+  &__hidden {
+    transform: translateY(-10rem);
+    opacity: 0;
+  }
+
+  &__list {
+    color: var(--color-light--2);
+    font-size: 1.4rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    & > * {
+      cursor: pointer;
+    }
+  }
+
+  &__item {
+    display: flex;
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    transition: all 0.2s;
+
+    &:hover {
+      color: var(--color-light--1);
+    }
+  }
+
+  &__icon {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--color-dark--1);
+    margin-right: 0.5rem;
+
+    transition: all 0.3s;
+  }
+
+  &__item:hover &__icon {
+    fill: var(--color-light--1);
+  }
+
+  &__sort--text {
+    color: var(--color-light--1);
+    font-size: 1.2rem;
+    align-self: end;
+  }
+}

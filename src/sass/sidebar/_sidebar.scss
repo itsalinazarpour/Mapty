@@ -1,0 +1,16 @@
+.logo {
+  height: 5.2rem;
+  align-self: center;
+  margin-bottom: 4.2rem;
+}
+
+.workouts {
+  list-style: none;
+  height: 77vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

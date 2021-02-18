@@ -1,0 +1,51 @@
+.error {
+  &__heading {
+    font-size: 5rem;
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+
+    @media only screen and (max-width: $bp-medium) {
+      font-size: 4.5rem;
+    }
+    @media only screen and (max-width: $bp-small) {
+      font-size: 4rem;
+    }
+    @media only screen and (max-width: $bp-micro) {
+      font-size: 3.75rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__text {
+    font-weight: 600;
+    font-size: 2rem;
+
+    @media only screen and (max-width: $bp-medium) {
+      font-size: 1.75rem;
+    }
+    @media only screen and (max-width: $bp-small) {
+      font-size: 1.5rem;
+    }
+    @media only screen and (max-width: $bp-micro) {
+      font-size: 1.25rem;
+    }
+  }
+
+  &__btn--close {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    border: 0;
+    background-color: inherit;
+    font-size: 2rem;
+    cursor: pointer;
+
+    @media only screen and (max-width: $bp-medium) {
+      font-size: 1.75rem;
+    }
+    @media only screen and (max-width: $bp-small) {
+      font-size: 1.5rem;
+    }
+  }
+}

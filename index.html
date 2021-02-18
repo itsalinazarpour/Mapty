@@ -4,52 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mapty by Jin</title>
+
+    <link rel="shortcut icon" type="image/png" href="src/img/icon.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="src/sass/main.scss" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+      crossorigin=""
+    ></script>
+
+    <script defer src="src/js/script.js"></script>
   </head>
-  <link rel="shortcut icon" type="image/png" href="/icon.png" />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
-  <link rel="stylesheet" href="css/main.css" />
-
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""
-  />
-  <script
-    defer
-    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""
-  ></script>
-
-  <script
-    defer
-    src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-    crossorigin=""
-  ></script>
-
-  <script defer src="script.js"></script>
-  <div class="overlay hidden"></div>
-  <div class="error-window hidden">
-    <h2 class="error__heading">⚠️ Error ⚠️</h2>
-
-    <p class="error__text">
-      ⚠️ Characters or Symbols and Negative Numbers are NOT allowed for inputs.
-      ⚠️<br />
-      Only Positive Numbers are permitted unless elevation field. <br />
-      On elevation input, Negative number is good to put!😄
-    </p>
-    <button class="error__btn--close">❌</button>
-  </div>
   <body>
+    <div class="overlay hidden"></div>
+    <div class="error-window hidden">
+      <h2 class="error__heading">⚠️ Error ⚠️</h2>
+
+      <p class="error__text">
+        ⚠️ Characters or Symbols and Negative Numbers are NOT allowed for
+        inputs. ⚠️<br />
+        Only Positive Numbers are permitted unless elevation field. <br />
+        On elevation input, Negative number is good to put!😄
+      </p>
+      <button class="error__btn--close">❌</button>
+    </div>
     <aside class="side-bar">
-      <img src="logo.png" alt="logo" class="logo" />
+      <img src="src/img/logo.png" alt="logo" class="logo" />
 
       <ul class="workouts">
         <form class="form hidden">
@@ -95,91 +97,6 @@
           </div>
           <button class="form__btn">OK</button>
         </form>
-
-        <!-- <div class="menu menu__hidden">
-          <ul class="menu__list">
-            <li class="menu__item menu__item--edit">
-              <svg class="menu__icon">
-                <use xlink:href="sprite.svg#icon-pencil"></use>
-              </svg>
-              <span>Edit form</span>
-            </li>
-            <li class="menu__item menu__item--delete">
-              <svg class="menu__icon">
-                <use xlink:href="sprite.svg#icon-trash"></use>
-              </svg>
-              <span>Delete from list</span>
-            </li>
-          </ul>
-        </div> -->
-
-        <!-- <li class="workout workout__running" data-id="1234567890">
-          <div class="menu menu__hidden">
-            <ul class="menu__list">
-              <li class="menu__item menu__item--edit">
-                <svg class="menu__icon">
-                  <use xlink:href="sprite.svg#icon-pencil"></use>
-                </svg>
-                <span>Edit form</span>
-              </li>
-              <li class="menu__item menu__item--delete">
-                <svg class="menu__icon">
-                  <use xlink:href="sprite.svg#icon-trash"></use>
-                </svg>
-                <span>Delete from list</span>
-              </li>
-            </ul>
-          </div>
-
-          <h2 class="workout__title">Runnning on January 20</h2>
-          <svg class="workout__icon">
-            <use xlink:href="sprite.svg#icon-dots-three-horizontal"></use>
-          </svg>
-          <div class="workout__details">
-            <span class="workout__icon">🏃‍♂️</span>
-            <span class="workout__value">5.2</span>
-            <span class="workout__unit">km</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⏱</span>
-            <span class="workout__value">24</span>
-            <span class="workout__unit">min</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⚡️</span>
-            <span class="workout__value">4.6</span>
-            <span class="workout__unit">min/km</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">🦶🏼</span>
-            <span class="workout__value">178</span>
-            <span class="workout__unit">spm</span>
-          </div>
-        </li>
-
-        <li class="workout workout__cycling" data-id="12345678901">
-          <h2 class="workout__title">Cycling on May 19</h2>
-          <div class="workout__details">
-            <span class="workout__icon">🚴‍♀️</span>
-            <span class="workout__value">15</span>
-            <span class="workout__unit">km</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⏱</span>
-            <span class="workout__value">14</span>
-            <span class="workout__unit">min</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⚡️</span>
-            <span class="workout__value">1.2</span>
-            <span class="workout__unit">min/km</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⛰</span>
-            <span class="workout__value">224</span>
-            <span class="workout__unit">m</span>
-          </div>
-        </li> -->
       </ul>
 
       <p class="copyright">
