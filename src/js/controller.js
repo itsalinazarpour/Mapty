@@ -35,7 +35,8 @@ class App {
   constructor() {
     this._getPosition();
     this._defaultElevationField();
-    model.getLocalStorage(this._workouts, this._renderWorkout.bind(this));
+    this._workouts = model.getLocalStorage();
+    this._renderWorkoutInSequence();
 
     form.addEventListener('submit', this._controlWokrout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
@@ -49,6 +50,12 @@ class App {
     overlay.addEventListener('click', this._closeErrorMsg);
   }
 
+  /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
+  async _renderWorkoutInSequence() {
+    for (const work of this._workouts) {
+      await this._renderWorkout(work);
+    }
+  }
   // GET POSITION FROM GEO API
   _getPosition() {
     if (navigator.geolocation)
@@ -273,8 +280,8 @@ class App {
 
     // HIDE FORM + clear input fields
     this._hideForm();
-
     // SET WORKOUT TO LOCAL STORAGE
+    console.log(this._workouts);
     model.setLocalStorage(this._workouts);
   }
 

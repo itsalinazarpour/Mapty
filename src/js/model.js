@@ -93,18 +93,26 @@ export const setLocalStorage = function (workouts) {
   localStorage.setItem('workouts', JSON.stringify(workouts));
 };
 
-export const getLocalStorage = async function (workouts, renderWorkout) {
+export const getLocalStorage = function () {
   const data = JSON.parse(localStorage.getItem('workouts'));
-
+  console.log(data);
   if (!data) return;
 
-  workouts = data;
-  console.log(this);
+  return data;
   /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
-  for (const work of workouts) {
-    await renderWorkout(work);
-  }
 };
+
+// export const getLocalStorage = async function (workouts, renderWorkout) {
+//     const data = JSON.parse(localStorage.getItem('workouts'));
+
+//     if (!data) return;
+
+//     workouts = data;
+//     /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
+//     for (const work of workouts) {
+//       await renderWorkout(work);
+//     }
+//   };
 
 export const clearLocalStorage = function () {
   localStorage.removeItem('workouts');
