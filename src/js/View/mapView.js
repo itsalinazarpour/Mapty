@@ -6,13 +6,16 @@ import 'leaflet';
 // import icons from 'url:../svg/sprite.svg';
 // import logoIcon from 'url:../img/icon.png';
 import View from './View.js';
+import WorkoutListsView from './workoutListsView.js';
 import { MAP_ZOOM_LEVEL } from './../config.js';
+import workoutListsView from './workoutListsView.js';
 
 class MapView extends View {
   _map = document.querySelector('.map');
   _mapZoomLevel = MAP_ZOOM_LEVEL;
   _errMsg =
     'Fail to load your position. </br>Please allow location access of this site to access your location🗺';
+  _inputDistance = document.querySelector('.form__input--distance');
 
   addHandlerRender() {}
 
@@ -33,8 +36,8 @@ class MapView extends View {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this._map);
 
-    // // SHOW FORM BY CLICKING ON MAP
-    // this._map.on('click', this._showForm.bind(this));
+    // SHOW FORM BY CLICKING ON MAP
+    this._map.on('click', workoutListsView._showForm.bind(workoutListsView));
 
     // // RENDER MARKER AFTER LOADING A MAP
     // this._workouts.forEach((work) => this._renderWorkoutMarker(work));
