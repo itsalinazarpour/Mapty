@@ -1,64 +1,12 @@
-// import 'core-js/stable';
+import 'core-js/stable';
 // // FOR ASYNC POLIFILLING ASYNC FUNCTION
-// import 'regenerator-runtime/runtime';
-// ('use strict');
+import 'regenerator-runtime/runtime';
+import 'leaflet';
 
-class Workout {
-  date = new Date();
-  id = (Date.now() + '').slice(-10);
-  sortToggle = false; // TRUE = DISTANCE, FALSE = DATE
+import icons from 'url:../svg/sprite.svg';
+import logoIcon from 'url:../img/icon.png';
+import * as model from './model.js';
 
-  constructor(coords, distance, duration) {
-    this.coords = coords; // [lat, lng]
-    this.distance = distance; // km
-    this.duration = duration; // min
-  }
-
-  _setDateDescription() {
-    //prettier-ignore
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-    this.dateDescription = `${
-      months[this.date.getMonth()]
-    } ${this.date.getDate()}
-    `;
-  }
-}
-
-class Running extends Workout {
-  type = 'running';
-
-  constructor(coords, distance, duration, cadence) {
-    super(coords, distance, duration);
-    this.cadence = cadence;
-    this.calcPace();
-    this._setDateDescription();
-  }
-
-  calcPace() {
-    this.pace = this.duration / this.distance; // mim/km
-    return this.pace;
-  }
-}
-
-class Cycling extends Workout {
-  type = 'cycling';
-
-  constructor(coords, distance, duration, elevationGain) {
-    super(coords, distance, duration);
-    this.elevationGain = elevationGain;
-    this.calcSpeed();
-    this._setDateDescription();
-  }
-
-  calcSpeed() {
-    this.speed = this.distance / (this.duration / 60); // km/h
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // APPLICATION ARCHITECTURE
 const containerMap = document.querySelector('.map');
 const sidebar = document.querySelector('.side-bar');
@@ -87,7 +35,7 @@ class App {
   constructor() {
     this._getPosition();
     this._defaultElevationField();
-    this._getLocalStorage();
+    model.getLocalStorage(this._workouts, this._renderWorkout.bind(this));
 
     form.addEventListener('submit', this._controlWokrout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
@@ -269,7 +217,7 @@ class App {
     }
 
     this._hideForm();
-    this._setLocalStorage();
+    model.setLocalStorage(this._workouts);
 
     location.reload();
   }
@@ -299,7 +247,7 @@ class App {
       )
         return this._displayErrorMsg();
 
-      workout = new Running([lat, lng], distance, duration, cadence);
+      workout = new model.Running([lat, lng], distance, duration, cadence);
     }
 
     // IF WORKOUT IS CYCLING, CREATE CYCLING OBJECT
@@ -311,7 +259,7 @@ class App {
       )
         return this._displayErrorMsg();
 
-      workout = new Cycling([lat, lng], distance, duration, elevation);
+      workout = new model.Cycling([lat, lng], distance, duration, elevation);
     }
 
     // ADD NEW OBJECT TO WORKOUTS ARRAY
@@ -327,12 +275,12 @@ class App {
     this._hideForm();
 
     // SET WORKOUT TO LOCAL STORAGE
-    this._setLocalStorage();
+    model.setLocalStorage(this._workouts);
   }
 
   async _renderWorkout(workout) {
-    const data = await this._getGeoCode(workout);
-    const weather = await this._showWeatherIcon(workout);
+    const data = await model.getGeoCode(workout);
+    const weather = await model.showWeatherIcon(workout);
 
     // APPLICABLE HTML FOR BOTH
     let html = `
@@ -341,25 +289,25 @@ class App {
             <ul class="menu__list">
               <li class="menu__item menu__item--edit">
                 <svg class="menu__icon">
-                  <use xlink:href="svg/sprite.svg#icon-pencil"></use>
+                  <use xlink:href="${icons}#icon-pencil"></use>
                 </svg>
                 <span>Edit form</span>
               </li>
               <li class="menu__item menu__item--delete">
                 <svg class="menu__icon">
-                  <use xlink:href="svg/sprite.svg#icon-trash"></use>
+                  <use xlink:href="${icons}#icon-trash"></use>
                 </svg>
                 <span>Delete this list</span>
               </li>
               <li class="menu__item menu__item--clear">
                 <svg class="menu__icon">
-                  <use xlink:href="svg/sprite.svg#icon-trash"></use>
+                  <use xlink:href="${icons}#icon-trash"></use>
                 </svg>
                 <span>Clear all lists</span>
               </li>
               <li class="menu__item menu__item--sort">
                 <svg class="menu__icon">
-                  <use xlink:href="svg/sprite.svg#icon-chevron-down"></use>
+                  <use xlink:href="${icons}#icon-chevron-down"></use>
                 </svg>
                 <span>Sort by</span><span class="menu__sort--text">(km, date)</span>
               </li>
@@ -373,7 +321,7 @@ class App {
 
           </h2>
           <svg class="workout__icon">
-            <use xlink:href="svg/sprite.svg#icon-dots-three-horizontal"></use>
+            <use xlink:href="${icons}#icon-dots-three-horizontal"></use>
           </svg>
           <div class="workout__details">
             <span class="workout__imoji workout__imoji--type">${
@@ -440,7 +388,7 @@ class App {
 
   _renderWorkoutMarker(workout) {
     const myIcon = L.icon({
-      iconUrl: 'icon.8ecc0056.png',
+      iconUrl: logoIcon,
       iconSize: [46, 46],
       iconAnchor: [22, 94],
       popupAnchor: [0, -90],
@@ -572,7 +520,7 @@ class App {
 
     // CLICK ON CLEAR BUTTON, CLEAR ALL
     if (menuItem.classList.contains('menu__item--clear'))
-      this._clearLocalStorage();
+      model.clearLocalStorage();
 
     // CLICK ON SORT BUTTON, SORT LISTS BY DISTANCE
     if (menuItem.classList.contains('menu__item--sort')) {
@@ -585,7 +533,7 @@ class App {
   _sortWorkout(workout) {
     workout.sortToggle ? this._sortByDate() : this._sortByDistance();
 
-    this._setLocalStorage();
+    model.setLocalStorage(this._workouts);
     location.reload();
 
     console.log(this._workouts);
@@ -630,69 +578,21 @@ class App {
     workoutEl.style.display = 'none';
     // DELETE SLECTED WORKOUT FROM THE WORKOUTS ARR
     this._workouts = this._workouts.filter((work) => work.id !== id);
-    this._setLocalStorage();
+    model.setLocalStorage(this._workouts);
   }
 
-  _setLocalStorage() {
-    localStorage.setItem('workouts', JSON.stringify(this._workouts));
-  }
+  // async _getLocalStorage() {
+  //   const data = JSON.parse(localStorage.getItem('workouts'));
 
-  async _getLocalStorage() {
-    const data = JSON.parse(localStorage.getItem('workouts'));
+  //   if (!data) return;
 
-    if (!data) return;
+  //   this._workouts = data;
 
-    this._workouts = data;
-
-    /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
-    for (const work of this._workouts) {
-      await this._renderWorkout(work);
-    }
-  }
-
-  _clearLocalStorage() {
-    localStorage.removeItem('workouts');
-    location.reload();
-  }
-
-  // GET GEO CODE BY COORDINATES FROM GEOCODE.XYZ
-  async _getGeoCode(workout) {
-    try {
-      const [lat, lng] = workout.coords;
-      const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-      if (!res.ok)
-        throw new Error(
-          'Please try to reload the page again. Unfortunately, this api can not read all datas at once and I am not willing to pay for the API so that is why this error occurs.'
-        );
-
-      const data = await res.json();
-
-      return data.osmtags.name;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  // GET WEATHER BY COORDINATES FROM OPEN WEATHER API
-  async _showWeatherIcon(workout) {
-    try {
-      const myKey = '5c04291f0b2520cd23ea484f5b1e34e2';
-      const [lat, lng] = workout.coords;
-
-      const res = await fetch(
-        `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}`
-      );
-      const data = await res.json();
-
-      if (!res.ok) throw new Error('Failed to load data from API');
-
-      const { icon } = data.weather[0];
-
-      return `http://openweathermap.org/img/wn/${icon}@2x.png`;
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  //   /// GET WORKOUT DATA IN SEQUENCE (IN ORDER TO USE THE SORT FUNCTION BUT IT GIVES HORRIBLE LOADING TIME) (IF USE FOREACH IT WILL GIVE MUCH BETTER PERFORMANCE BUT THE SORT FUNCTIONS ARE NOT WORKING)
+  //   for (const work of this._workouts) {
+  //     await this._renderWorkout(work);
+  //   }
+  // }
 }
 
 const app = new App();
