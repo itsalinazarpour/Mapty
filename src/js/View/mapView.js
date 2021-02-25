@@ -3,12 +3,14 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'leaflet';
 
-// import icons from 'url:../svg/sprite.svg';
-// import logoIcon from 'url:../img/icon.png';
+import icons from 'url:../../svg/sprite.svg';
+import logoIcon from 'url:../../img/icon.png';
 import View from './View.js';
-import WorkoutListsView from './workoutListsView.js';
-import { MAP_ZOOM_LEVEL } from './../config.js';
 import workoutListsView from './workoutListsView.js';
+
+// prettier-ignore
+import { MAP_ZOOM_LEVEL, ICON_SIZE, ICON_ANCHOR, POPUP_ANCHOR, POPUP_MAX_WIDTH, POPUP_MIN_WIDTH, POPUP_AUTO_CLOSE, POPUP_CLOSE_ON_CLICK } from './../config.js';
+import { setDescription } from '../helper.js';
 
 class MapView extends View {
   _map = document.querySelector('.map');
@@ -37,7 +39,7 @@ class MapView extends View {
     }).addTo(this._map);
 
     // SHOW FORM BY CLICKING ON MAP
-    this._map.on('click', workoutListsView._showForm.bind(workoutListsView));
+    this._map.on('click', workoutListsView.showForm.bind(workoutListsView));
 
     // // RENDER MARKER AFTER LOADING A MAP
     // this._workouts.forEach((work) => this._renderWorkoutMarker(work));
@@ -47,6 +49,32 @@ class MapView extends View {
 
     // const allCoords = this._workouts.map((workout) => workout.coords);
     // this._map.fitBounds(allCoords, { padding: [150, 150] });
+  }
+
+  renderWorkoutMarker(workouts) {
+    const workout = workouts[workouts.length - 1];
+
+    const myIcon = L.icon({
+      iconUrl: logoIcon,
+      iconSize: ICON_SIZE,
+      iconAnchor: ICON_ANCHOR,
+      popupAnchor: POPUP_ANCHOR,
+      className: `${workout.id}`,
+    });
+
+    L.marker(workout.coords, { icon: myIcon })
+      .addTo(this._map)
+      .bindPopup(
+        L.popup({
+          maxWidth: POPUP_MAX_WIDTH,
+          minWidth: POPUP_MIN_WIDTH,
+          autoClose: POPUP_AUTO_CLOSE,
+          closeOnClick: POPUP_CLOSE_ON_CLICK,
+          className: `${workout.type}-popup ${workout.id}`,
+        })
+      )
+      .setPopupContent(setDescription(workout))
+      .openPopup();
   }
 }
 

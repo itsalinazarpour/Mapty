@@ -1,5 +1,9 @@
 import { AJAX } from './helper.js';
 
+export const state = {
+  workouts: [],
+};
+
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
@@ -15,10 +19,8 @@ class Workout {
     //prettier-ignore
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    this.dateDescription = `${
-      months[this.date.getMonth()]
-    } ${this.date.getDate()}
-      `;
+    // prettier-ignore
+    this.dateDescription = `${months[this.date.getMonth()]} ${this.date.getDate()}`;
   }
 }
 
@@ -97,7 +99,6 @@ export const getLocalStorage = function () {
   const data = JSON.parse(localStorage.getItem('workouts'));
   console.log(data);
   if (!data) return;
-
   return data;
 };
 
