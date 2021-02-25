@@ -61,7 +61,7 @@ export const getGeoCode = async function (workout) {
     const [lat, lng] = workout.coords;
     const data = await AJAX(
       `https://geocode.xyz/${lat},${lng}?geoit=json`,
-      'Please try to reload the page again. Unfortunately, this api can not read all datas at once and I am not willing to pay for the API so that is why this error occurs.'
+      'Please try to reload the page again. Unfortunately, this api what I am using now can not read all datas at once and I am not willing to pay for the API. Error occurs from this reason.'
     );
 
     return data.osmtags.name;
@@ -97,12 +97,14 @@ export const setLocalStorage = function (workouts) {
 
 export const getLocalStorage = function () {
   const data = JSON.parse(localStorage.getItem('workouts'));
-  console.log(data);
+
   if (!data) return;
-  return data;
+  state.workouts = data;
 };
 
 export const clearLocalStorage = function () {
   localStorage.removeItem('workouts');
   location.reload();
 };
+
+// clearLocalStorage();

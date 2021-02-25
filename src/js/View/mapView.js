@@ -9,7 +9,7 @@ import View from './View.js';
 import workoutListsView from './workoutListsView.js';
 
 // prettier-ignore
-import { MAP_ZOOM_LEVEL, ICON_SIZE, ICON_ANCHOR, POPUP_ANCHOR, POPUP_MAX_WIDTH, POPUP_MIN_WIDTH, POPUP_AUTO_CLOSE, POPUP_CLOSE_ON_CLICK } from './../config.js';
+import { MAP_ZOOM_LEVEL, ICON_SIZE, ICON_ANCHOR, POPUP_ANCHOR, POPUP_MAX_WIDTH, POPUP_MIN_WIDTH, POPUP_AUTO_CLOSE, POPUP_CLOSE_ON_CLICK, MAP_PADDING} from './../config.js';
 import { setDescription } from '../helper.js';
 
 class MapView extends View {
@@ -19,14 +19,12 @@ class MapView extends View {
     'Fail to load your position. </br>Please allow location access of this site to access your location🗺';
   _inputDistance = document.querySelector('.form__input--distance');
 
-  addHandlerRender() {}
-
   addHandlerUpdate() {}
 
   _clear() {}
 
-  // LOAD MAP FROM LEAFLET LIBRARY
-  loadMap(position) {
+  // LOAD MAP FROM LEAFLET LIBRARY, SHOW MARKERS FROM LOCAL STORAGE \\ SHOW FORM BY CLICKING
+  loadMap(position, workouts) {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
     const coords = [latitude, longitude];
@@ -41,18 +39,19 @@ class MapView extends View {
     // SHOW FORM BY CLICKING ON MAP
     this._map.on('click', workoutListsView.showForm.bind(workoutListsView));
 
-    // // RENDER MARKER AFTER LOADING A MAP
-    // this._workouts.forEach((work) => this._renderWorkoutMarker(work));
+    // IF LOCAL STORAGE IS EMPTY RETURN IMMEDIATELY
+    if (workouts.length === 0) return;
 
-    // // ZOOM TO FIT ALL WORKOUT MARKERS
-    // if (this._workouts.length === [].length) return;
+    // RENDER MARKER AFTER LOADING A MAP
+    workouts.forEach((work) => this.renderWorkoutMarker(work));
 
-    // const allCoords = this._workouts.map((workout) => workout.coords);
-    // this._map.fitBounds(allCoords, { padding: [150, 150] });
+    // ZOOM TO FIT ALL WORKOUT MARKERS
+    const allCoords = workouts.map((workout) => workout.coords);
+    this._map.fitBounds(allCoords, { padding: MAP_PADDING });
   }
 
-  renderWorkoutMarker(workouts) {
-    const workout = workouts[workouts.length - 1];
+  renderWorkoutMarker(workout) {
+    // const workout = workouts[workouts.length - 1];
 
     const myIcon = L.icon({
       iconUrl: logoIcon,

@@ -39,7 +39,7 @@ class WorkoutListsView extends View {
 
     let workout;
 
-    // IF WORKOUT IS RUNNING, CREATE RUNNING OBJECT
+    // CHECK TYPE AND CREATE CORRESPONDING OBJECT
     if (type === 'running') {
       // CHECK IF DATA IS VALID
       if (
@@ -49,12 +49,9 @@ class WorkoutListsView extends View {
         return this.renderError();
 
       workout = new running([lat, lng], distance, duration, cadence);
-      // workout = new model.Running([lat, lng], distance, duration, cadence);
     }
 
-    // IF WORKOUT IS CYCLING, CREATE CYCLING OBJECT
     if (type === 'cycling') {
-      // CHECK IF DATA IS VALID
       if (
         !isNumber(duration, distance, elevation) ||
         !isPositive(duration, distance)
@@ -66,14 +63,32 @@ class WorkoutListsView extends View {
 
     // ADD NEW OBJECT TO WORKOUTS ARRAY
     workouts.push(workout);
+    console.log(workouts);
 
     // RENDER WORKOUT ON LIST
-    this._renderWorkout(workout);
+    this.renderWorkout(workout);
 
     // HIDE FORM + clear input fields
     this._hideForm();
   }
 
+  async renderWorkout(workout, geoData, weatherData) {
+    console.log(workout);
+    const geo = await geoData;
+    const weather = await weatherData;
+
+    // APPLICABLE HTML FOR BOTH
+    let markup = this._generateMarkup(workout, geo, weather);
+
+    // ADD HTML BASED ON TYPE
+    workout.type === 'running'
+      ? (markup += this._generateMarkupRunning(workout))
+      : (markup += this._generateMarkupCycling(workout));
+
+    this._form.insertAdjacentHTML('afterend', markup);
+  }
+
+  // HANDLER FORM WHEN USER SUBMITS
   addHandlerForm(handler) {
     this._form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -138,24 +153,7 @@ class WorkoutListsView extends View {
     }
   }
 
-  _renderWorkout(workout) {
-    // const data = await this._getGeoCode(workout);
-    // const weather = await this._showWeatherIcon(workout);
-    const data = '';
-    const weather = '';
-
-    // APPLICABLE HTML FOR BOTH
-    let markup = this._generateMarkup(workout, data, weather);
-
-    // ADD HTML BASED ON TYPE
-    workout.type === 'running'
-      ? (markup += this._generateMarkupRunning(workout))
-      : (markup += this._generateMarkupCycling(workout));
-
-    this._form.insertAdjacentHTML('afterend', markup);
-  }
-
-  _generateMarkup(workout, data, weather) {
+  _generateMarkup(workout, geo, weather) {
     return `
       <li class="workout workout__${workout.type}" data-id="${workout.id}">
           <div class="menu menu__hidden">
@@ -187,10 +185,8 @@ class WorkoutListsView extends View {
             </ul>
           </div>
 
-          <h2 class="workout__title">${setDescription(workout)}${
-      data ? ',' : ''
-    }
-          ${data ?? ''} <img class="workout__weather" src="${weather}"/>
+          <h2 class="workout__title">${setDescription(workout)}${geo ? ',' : ''}
+          ${geo ?? ''} <img class="workout__weather" src="${weather}"/>
 
           </h2>
           <svg class="workout__icon">
