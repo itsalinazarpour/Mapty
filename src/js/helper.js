@@ -1,9 +1,9 @@
 export const AJAX = async function (url, errMsg) {
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error(errMsg);
-
     const data = await res.json();
+
+    if (!res.ok) throw new Error(errMsg);
 
     return data;
   } catch (err) {

@@ -67,12 +67,12 @@ export const getGeoCode = async function (workout) {
     return data.osmtags.name;
   } catch (err) {
     console.error(err);
-    throw err;
+    return '';
   }
 };
 
 // GET WEATHER BY COORDINATES FROM OPEN WEATHER API
-export const showWeatherIcon = async function (workout) {
+export const getWeatherData = async function (workout) {
   try {
     const myKey = '5c04291f0b2520cd23ea484f5b1e34e2';
     const [lat, lng] = workout.coords;
@@ -86,7 +86,6 @@ export const showWeatherIcon = async function (workout) {
 
     return `http://openweathermap.org/img/wn/${icon}@2x.png`;
   } catch (err) {
-    console.error(err);
     throw err;
   }
 };
@@ -104,7 +103,6 @@ export const getLocalStorage = function () {
 
 export const clearLocalStorage = function () {
   localStorage.removeItem('workouts');
-  location.reload();
 };
 
-// clearLocalStorage();
+clearLocalStorage();

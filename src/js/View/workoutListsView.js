@@ -28,7 +28,7 @@ class WorkoutListsView extends View {
     this._defaultElevationField();
   }
 
-  newWorkout(running, cycling, workouts) {
+  newWorkout(running, cycling, workouts, geoData, weatherData) {
     // GET DATA FROM FORM
     const type = this._inputType.value;
     const duration = +this._inputDuration.value;
@@ -63,29 +63,28 @@ class WorkoutListsView extends View {
 
     // ADD NEW OBJECT TO WORKOUTS ARRAY
     workouts.push(workout);
-    console.log(workouts);
-
-    // RENDER WORKOUT ON LIST
-    this.renderWorkout(workout);
 
     // HIDE FORM + clear input fields
     this._hideForm();
   }
 
   async renderWorkout(workout, geoData, weatherData) {
-    console.log(workout);
-    const geo = await geoData;
-    const weather = await weatherData;
+    try {
+      const geo = await geoData;
+      const weather = await weatherData;
 
-    // APPLICABLE HTML FOR BOTH
-    let markup = this._generateMarkup(workout, geo, weather);
+      // APPLICABLE HTML FOR BOTH
+      let markup = this._generateMarkup(workout, geo, weather);
 
-    // ADD HTML BASED ON TYPE
-    workout.type === 'running'
-      ? (markup += this._generateMarkupRunning(workout))
-      : (markup += this._generateMarkupCycling(workout));
+      // ADD HTML BASED ON TYPE
+      workout.type === 'running'
+        ? (markup += this._generateMarkupRunning(workout))
+        : (markup += this._generateMarkupCycling(workout));
 
-    this._form.insertAdjacentHTML('afterend', markup);
+      this._form.insertAdjacentHTML('afterend', markup);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // HANDLER FORM WHEN USER SUBMITS

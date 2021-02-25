@@ -25,10 +25,17 @@ const controlWorkout = function (edit = false) {
       model.state.workouts
     );
 
-    // RENDER WORKOUT ON MAP AS A MARKER
-    mapView.renderWorkoutMarker(
-      model.state.workouts[model.state.workouts.length - 1]
+    // RENDER WORKOUT ON LIST
+    const workout = model.state.workouts[model.state.workouts.length - 1];
+
+    workoutListsView.renderWorkout(
+      workout,
+      model.getGeoCode(workout),
+      model.getWeatherData(workout)
     );
+
+    // RENDER WORKOUT ON MAP AS A MARKER
+    mapView.renderWorkoutMarker(workout);
 
     // SET WORKOUT TO LOCAL STORAGE
     model.setLocalStorage(model.state.workouts);
@@ -50,7 +57,7 @@ const loadWorkouts = function (workouts) {
     workoutListsView.renderWorkout(
       workout,
       model.getGeoCode(workout),
-      model.showWeatherIcon(workout)
+      model.getWeatherData(workout)
     )
   );
 };
