@@ -36,3 +36,14 @@ export const findWorkout = function (workouts, workoutEl) {
 
   return workout;
 };
+
+export const findWorkoutPopup = function (workouts, popup) {
+  // leaflet-popup running-popup 3201455437 leaflet-zoom-animated
+  const workout = workouts.find(
+    (work) =>
+      `leaflet-popup ${work.type}-popup ${work.id} leaflet-zoom-animated` ===
+      popup.className
+  );
+
+  return workout;
+};

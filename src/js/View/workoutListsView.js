@@ -29,8 +29,8 @@ class WorkoutListsView extends View {
     this._defaultElevationField();
   }
 
-  // CLICK ON LIST, MOVE TO CORRESPONDING POPUP
-  addHandlerMoveToPopup(handler) {
+  // CLICK ON LIST, SET VIEW TO CORRESPONDING POPUP
+  addHandlerSetViewToList(handler) {
     this._parentEl.addEventListener('click', function (e) {
       const workoutEl = e.target.closest('.workout');
       if (!workoutEl) return;

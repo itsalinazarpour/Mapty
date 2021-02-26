@@ -7,7 +7,7 @@ import * as model from './model.js';
 import mapView from './View/mapView.js';
 import workoutListsView from './View/workoutListsView.js';
 
-import { findWorkout } from './helper.js';
+import { findWorkout, findWorkoutPopup } from './helper.js';
 
 // GET POSITION FROM GEO API AND CONTROL MAP
 const controlMap = function () {
@@ -64,8 +64,16 @@ const loadWorkouts = function (workouts) {
   );
 };
 
-const controlMoveToPopup = function (workoutEl) {
+// CLICK ON LIST
+const controlSetViewToList = function (workoutEl) {
   const workout = findWorkout(model.state.workouts, workoutEl);
+
+  mapView.setViewToPopup(workout);
+};
+
+// CLICK ON POPUP
+const controlSetViewToPopup = function (popup) {
+  const workout = findWorkoutPopup(model.state.workouts, popup);
 
   mapView.setViewToPopup(workout);
 };
@@ -75,7 +83,8 @@ const init = function () {
   model.getLocalStorage();
   loadWorkouts(model.state.workouts);
   workoutListsView.addHandlerForm(controlWorkout);
-  workoutListsView.addHandlerMoveToPopup(controlMoveToPopup);
+  workoutListsView.addHandlerSetViewToList(controlSetViewToList);
+  mapView.addHandlerSetViewToPopup(controlSetViewToPopup);
 };
 
 init();

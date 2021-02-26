@@ -20,9 +20,15 @@ class MapView extends View {
     'Fail to load your position. </br>Please allow location access of this site to access your location🗺';
   _inputDistance = document.querySelector('.form__input--distance');
 
-  addHandlerUpdate() {}
+  // CLICK ON POP-UP CONTENT ON MAP, SET VIEW TO THE CORRESPONDING POP-UP
+  addHandlerSetViewToPopup(handler) {
+    this._map.addEventListener('click', function (e) {
+      const popup = e.target.closest('.leaflet-popup');
+      if (!popup) return;
 
-  _clear() {}
+      handler(popup);
+    });
+  }
 
   // LOAD MAP FROM LEAFLET LIBRARY, SHOW MARKERS FROM LOCAL STORAGE \\ SHOW FORM BY CLICKING
   loadMap(position, workouts) {
@@ -79,6 +85,27 @@ class MapView extends View {
 
   setViewToPopup(workout) {
     this._map.setView(workout.coords, this._mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+  }
+
+  // CLICK ON POP-UP CONTENT ON MAP  MOVE MAP TO THE CORRESPONDING POP-UP
+  _moveToPopupOnMap(e) {
+    const popup = e.target.closest('.leaflet-popup');
+
+    if (!popup) return;
+
+    // leaflet-popup running-popup 3201455437 leaflet-zoom-animated
+    const selectedWorkout = this._workouts.find(
+      (work) =>
+        `leaflet-popup ${work.type}-popup ${work.id} leaflet-zoom-animated` ===
+        popup.className
+    );
+
+    this._map.setView(selectedWorkout.coords, this._mapZoomLevel, {
       animate: true,
       pan: {
         duration: 1,
