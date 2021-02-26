@@ -30,3 +30,9 @@ export const setDescription = function (workout) {
       workout.type[0].toUpperCase()
     )} on ${workout.dateDescription}`;
 };
+
+export const findWorkout = function (workouts, workoutEl) {
+  const workout = workouts.find((work) => work.id === workoutEl.dataset.id);
+
+  return workout;
+};

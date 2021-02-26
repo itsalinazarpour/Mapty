@@ -14,6 +14,7 @@ class WorkoutListsView extends View {
     On elevation input, Negative number is good to put!😄`;
   _mapEvent;
 
+  _parentEl = document.querySelector('.workouts');
   _form = document.querySelector('.form');
   _inputType = document.querySelector('.form__input--type');
   _inputDistance = document.querySelector('.form__input--distance');
@@ -28,7 +29,47 @@ class WorkoutListsView extends View {
     this._defaultElevationField();
   }
 
-  newWorkout(running, cycling, workouts, geoData, weatherData) {
+  // CLICK ON LIST, MOVE TO CORRESPONDING POPUP
+  addHandlerMoveToPopup(handler) {
+    this._parentEl.addEventListener('click', function (e) {
+      const workoutEl = e.target.closest('.workout');
+      if (!workoutEl) return;
+
+      handler(workoutEl);
+    });
+  }
+
+  // HANDLER FORM WHEN USER SUBMITS
+  addHandlerForm(handler) {
+    this._form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      handler();
+    });
+  }
+
+  _addHandlerSelect() {
+    // prettier-ignore
+    this._inputType.addEventListener('change', this._toggleElevationField.bind(this));
+  }
+
+  _moveToPopupOnList(e) {
+    const workoutEl = e.target.closest('.workout');
+
+    if (!workoutEl) return;
+
+    const workout = this._workouts.find(
+      (work) => work.id === workoutEl.dataset.id
+    );
+
+    this._map.setView(workout.coords, this._mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+  }
+
+  newWorkout(running, cycling, workouts) {
     // GET DATA FROM FORM
     const type = this._inputType.value;
     const duration = +this._inputDuration.value;
@@ -87,20 +128,7 @@ class WorkoutListsView extends View {
     }
   }
 
-  // HANDLER FORM WHEN USER SUBMITS
-  addHandlerForm(handler) {
-    this._form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      handler();
-    });
-  }
-
   addHandlerUpdate() {}
-
-  _addHandlerSelect() {
-    // prettier-ignore
-    this._inputType.addEventListener('change', this._toggleElevationField.bind(this));
-  }
 
   showForm(mapE) {
     this._form.classList.remove('hidden');

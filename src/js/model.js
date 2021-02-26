@@ -105,4 +105,4 @@ export const clearLocalStorage = function () {
   localStorage.removeItem('workouts');
 };
 
-clearLocalStorage();
+// clearLocalStorage();

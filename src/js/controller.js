@@ -7,6 +7,8 @@ import * as model from './model.js';
 import mapView from './View/mapView.js';
 import workoutListsView from './View/workoutListsView.js';
 
+import { findWorkout } from './helper.js';
+
 // GET POSITION FROM GEO API AND CONTROL MAP
 const controlMap = function () {
   if (navigator.geolocation)
@@ -62,11 +64,18 @@ const loadWorkouts = function (workouts) {
   );
 };
 
+const controlMoveToPopup = function (workoutEl) {
+  const workout = findWorkout(model.state.workouts, workoutEl);
+
+  mapView.setViewToPopup(workout);
+};
+
 const init = function () {
   controlMap();
   model.getLocalStorage();
   loadWorkouts(model.state.workouts);
   workoutListsView.addHandlerForm(controlWorkout);
+  workoutListsView.addHandlerMoveToPopup(controlMoveToPopup);
 };
 
 init();

@@ -15,6 +15,7 @@ import { setDescription } from '../helper.js';
 class MapView extends View {
   _map = document.querySelector('.map');
   _mapZoomLevel = MAP_ZOOM_LEVEL;
+
   _errMsg =
     'Fail to load your position. </br>Please allow location access of this site to access your location🗺';
   _inputDistance = document.querySelector('.form__input--distance');
@@ -74,6 +75,15 @@ class MapView extends View {
       )
       .setPopupContent(setDescription(workout))
       .openPopup();
+  }
+
+  setViewToPopup(workout) {
+    this._map.setView(workout.coords, this._mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
   }
 }
 
