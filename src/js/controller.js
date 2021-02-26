@@ -6,6 +6,7 @@ import 'leaflet';
 import * as model from './model.js';
 import mapView from './View/mapView.js';
 import workoutListsView from './View/workoutListsView.js';
+import submenuView from './View/submenuView.js';
 
 import { findWorkout, findWorkoutPopup } from './helper.js';
 
@@ -18,8 +19,8 @@ const controlMap = function () {
     );
 };
 
-const controlWorkout = function (edit = false) {
-  if (!edit) {
+const controlWorkout = function () {
+  if (!model.state.edit) {
     // RENDER NEW WORKOUT
     workoutListsView.newWorkout(
       model.Running,
@@ -42,7 +43,7 @@ const controlWorkout = function (edit = false) {
     // SET WORKOUT TO LOCAL STORAGE
     model.setLocalStorage(model.state.workouts);
   }
-  if (edit) {
+  if (model.state.edit) {
     workoutListsView.editWorkout(this._selectedWorkout);
   }
 };
@@ -64,18 +65,51 @@ const loadWorkouts = function (workouts) {
   );
 };
 
-// CLICK ON LIST
+// CLICK ON LIST, SET VIEW TO CORRESPONDING POPUP
 const controlSetViewToList = function (workoutEl) {
   const workout = findWorkout(model.state.workouts, workoutEl);
 
   mapView.setViewToPopup(workout);
 };
 
-// CLICK ON POPUP
+// CLICK ON POP-UP CONTENT ON MAP, SET VIEW TO THE CORRESPONDING POP-UP
 const controlSetViewToPopup = function (popup) {
   const workout = findWorkoutPopup(model.state.workouts, popup);
 
   mapView.setViewToPopup(workout);
+};
+
+const controlWorkoutMenu = function (workoutEl, menuItem) {
+  if (menuItem === null) return; // Guard clause
+  const workout = findWorkout(model.state.workouts, workoutEl);
+
+  if (menuItem.classList.contains('menu__item--edit')) {
+    workoutListsView.showEditForm(workout);
+    workoutListsView.defaultElevationField();
+    model.state.edit = true;
+
+    // if (model.state.edit) {
+    //   this._map.on('click', this._showBrandNewForm.bind(this));
+    // }
+  }
+  // CLICK ON DELETE BUTTON, DELETE THE WORKOUT
+  if (menuItem.classList.contains('menu__item--delete')) {
+    submenuView.deleteWorkout(workout, workoutEl);
+    // console.log(workoutEl);
+    // console.log(workout);
+
+    model.state.workouts = model.state.workouts.filter(
+      (work) => work.id !== workout.id
+    );
+    model.setLocalStorage(model.state.workouts);
+    mapView.setZoomAndFit(model.state.workouts);
+  }
+
+  // // CLICK ON CLEAR BUTTON, CLEAR ALL
+  // if (menuItem.classList.contains('menu__item--clear'))
+  //   if (menuItem.classList.contains('menu__item--sort'))
+  //     // CLICK ON SORT BUTTON, SORT LISTS BY DISTANCE
+  submenuView.hideMenu();
 };
 
 const init = function () {
@@ -85,6 +119,7 @@ const init = function () {
   workoutListsView.addHandlerForm(controlWorkout);
   workoutListsView.addHandlerSetViewToList(controlSetViewToList);
   mapView.addHandlerSetViewToPopup(controlSetViewToPopup);
+  submenuView.addHandlerControlMenu(controlWorkoutMenu);
 };
 
 init();

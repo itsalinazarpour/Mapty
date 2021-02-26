@@ -2,6 +2,7 @@ import { AJAX } from './helper.js';
 
 export const state = {
   workouts: [],
+  edit: false,
 };
 
 class Workout {
@@ -66,7 +67,7 @@ export const getGeoCode = async function (workout) {
 
     return data.osmtags.name;
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     return '';
   }
 };

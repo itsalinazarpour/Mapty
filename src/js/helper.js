@@ -47,3 +47,23 @@ export const findWorkoutPopup = function (workouts, popup) {
 
   return workout;
 };
+
+export const findPopupByClassName = function (popups, workoutEl) {
+  const popup = popups.find(
+    (pop) =>
+      `leaflet-popup ${workoutEl.type}-popup ${workoutEl.id} leaflet-zoom-animated` ===
+      pop.className
+  );
+
+  return popup;
+};
+
+export const findMarkerByClassName = function (markers, workoutEl) {
+  const marker = markers.find(
+    (mark) =>
+      mark.className ===
+      `leaflet-marker-icon ${workoutEl.id} leaflet-zoom-animated leaflet-interactive`
+  );
+
+  return marker;
+};

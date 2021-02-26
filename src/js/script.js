@@ -528,7 +528,7 @@ class App {
     });
   }
 
-  // CLICK POP-UP CONTENT ON MAP  MOVE MAP TO THE CORRESPONDING POP-UP
+  // CLICK ON POP-UP CONTENT ON MAP  MOVE MAP TO THE CORRESPONDING POP-UP
   _moveToPopupOnMap(e) {
     const popup = e.target.closest('.leaflet-popup');
 

@@ -26,10 +26,9 @@ class WorkoutListsView extends View {
   constructor() {
     super();
     this._addHandlerSelect();
-    this._defaultElevationField();
+    this.defaultElevationField();
   }
 
-  // CLICK ON LIST, SET VIEW TO CORRESPONDING POPUP
   addHandlerSetViewToList(handler) {
     this._parentEl.addEventListener('click', function (e) {
       const workoutEl = e.target.closest('.workout');
@@ -50,23 +49,6 @@ class WorkoutListsView extends View {
   _addHandlerSelect() {
     // prettier-ignore
     this._inputType.addEventListener('change', this._toggleElevationField.bind(this));
-  }
-
-  _moveToPopupOnList(e) {
-    const workoutEl = e.target.closest('.workout');
-
-    if (!workoutEl) return;
-
-    const workout = this._workouts.find(
-      (work) => work.id === workoutEl.dataset.id
-    );
-
-    this._map.setView(workout.coords, this._mapZoomLevel, {
-      animate: true,
-      pan: {
-        duration: 1,
-      },
-    });
   }
 
   newWorkout(running, cycling, workouts) {
@@ -139,6 +121,28 @@ class WorkoutListsView extends View {
     this._mapEvent = mapE;
   }
 
+  showEditForm(workout) {
+    // CONVERT WORKOUT COORDS ARRAY TO OBJECT TO FIT MAP EVENT FORMAT
+    const coords = workout.coords;
+    const objCoords = {
+      latlng: {
+        lat: coords[0],
+        lng: coords[1],
+      },
+    };
+
+    this.showForm(objCoords);
+
+    this._inputType.value = workout.type;
+    this._inputDistance.value = workout.distance;
+    this._inputDuration.value = workout.duration;
+
+    if (this._inputType.value === 'running')
+      this._inputCadence.value = workout.cadence;
+    if (this._inputType.value === 'cycling')
+      this._inputElevation.value = workout.elevationGain;
+  }
+
   _hideForm() {
     // CLEAR INPUT FIELDS
     this._clearInputFields();
@@ -164,7 +168,7 @@ class WorkoutListsView extends View {
   }
 
   // SET DEFAULT FIELD
-  _defaultElevationField() {
+  defaultElevationField() {
     if (this._inputType.value === 'running') {
       //prettier-ignore
       this._inputCadence.closest('.form__row').classList.remove('form__row--hidden');

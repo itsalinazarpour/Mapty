@@ -3,7 +3,6 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'leaflet';
 
-import icons from 'url:../../svg/sprite.svg';
 import logoIcon from 'url:../../img/icon.png';
 import View from './View.js';
 import workoutListsView from './workoutListsView.js';
@@ -20,7 +19,6 @@ class MapView extends View {
     'Fail to load your position. </br>Please allow location access of this site to access your location🗺';
   _inputDistance = document.querySelector('.form__input--distance');
 
-  // CLICK ON POP-UP CONTENT ON MAP, SET VIEW TO THE CORRESPONDING POP-UP
   addHandlerSetViewToPopup(handler) {
     this._map.addEventListener('click', function (e) {
       const popup = e.target.closest('.leaflet-popup');
@@ -30,7 +28,7 @@ class MapView extends View {
     });
   }
 
-  // LOAD MAP FROM LEAFLET LIBRARY, SHOW MARKERS FROM LOCAL STORAGE \\ SHOW FORM BY CLICKING
+  // LOAD MAP FROM LEAFLET LIBRARY, SHOW MARKERS FROM LOCAL STORAGE || SHOW FORM BY CLICKING
   loadMap(position, workouts) {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
@@ -53,8 +51,7 @@ class MapView extends View {
     workouts.forEach((work) => this.renderWorkoutMarker(work));
 
     // ZOOM TO FIT ALL WORKOUT MARKERS
-    const allCoords = workouts.map((workout) => workout.coords);
-    this._map.fitBounds(allCoords, { padding: MAP_PADDING });
+    this.setZoomAndFit(workouts);
   }
 
   renderWorkoutMarker(workout) {
@@ -83,29 +80,15 @@ class MapView extends View {
       .openPopup();
   }
 
-  setViewToPopup(workout) {
-    this._map.setView(workout.coords, this._mapZoomLevel, {
-      animate: true,
-      pan: {
-        duration: 1,
-      },
-    });
+  setZoomAndFit(workouts) {
+    if (workouts.length <= 1) return this.setViewToPopup(workouts[0]);
+
+    const allCoords = workouts.map((workout) => workout.coords);
+    this._map.fitBounds(allCoords, { padding: MAP_PADDING });
   }
 
-  // CLICK ON POP-UP CONTENT ON MAP  MOVE MAP TO THE CORRESPONDING POP-UP
-  _moveToPopupOnMap(e) {
-    const popup = e.target.closest('.leaflet-popup');
-
-    if (!popup) return;
-
-    // leaflet-popup running-popup 3201455437 leaflet-zoom-animated
-    const selectedWorkout = this._workouts.find(
-      (work) =>
-        `leaflet-popup ${work.type}-popup ${work.id} leaflet-zoom-animated` ===
-        popup.className
-    );
-
-    this._map.setView(selectedWorkout.coords, this._mapZoomLevel, {
+  setViewToPopup(workout) {
+    this._map.setView(workout.coords, this._mapZoomLevel, {
       animate: true,
       pan: {
         duration: 1,
