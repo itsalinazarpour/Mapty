@@ -61,7 +61,7 @@ class SubmenuView extends View {
     this._closeMenu();
   }
 
-  // DELETE LIST FROM LOCAL STORAGE, WORKOUT ARRAY AND RELOAD PAGE
+  // DELETE LIST FROM LOCAL STORAGE AND WORKOUT ARRAY
   deleteWorkout(workout, workoutEl) {
     // [...BLAH] = ARRAY.FROM(BLAH)  CONVERTING DOM TO ARR
     const popups = [...document.querySelectorAll('.leaflet-popup')];
@@ -74,6 +74,16 @@ class SubmenuView extends View {
     popup.style.display = 'none';
     marker.style.display = 'none';
     workoutEl.style.display = 'none';
+  }
+
+  deleteAllWorkouts() {
+    const popups = document.querySelectorAll('.leaflet-popup');
+    const markers = document.querySelectorAll('.leaflet-marker-icon');
+    const workouts = document.querySelectorAll('.workout');
+
+    popups.forEach((popup) => (popup.style.display = 'none'));
+    markers.forEach((marker) => (marker.style.display = 'none'));
+    workouts.forEach((workout) => (workout.style.display = 'none'));
   }
 
   hideMenu() {
@@ -95,6 +105,12 @@ class SubmenuView extends View {
     if (e.target.closest('.menu__item') !== null || isHidden) return;
 
     this.hideMenu();
+  }
+
+  sortWorkout(workouts, sortBoolean) {
+    if (sortBoolean) workouts.sort((a, b) => a.distance - b.distance);
+    //prettier-ignore
+    if(!sortBoolean) workouts.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 }
 

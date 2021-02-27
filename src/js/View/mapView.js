@@ -81,7 +81,8 @@ class MapView extends View {
   }
 
   setZoomAndFit(workouts) {
-    if (workouts.length <= 1) return this.setViewToPopup(workouts[0]);
+    // if(workouts.length === 0) return
+    if (workouts.length === 1) return this.setViewToPopup(workouts[0]);
 
     const allCoords = workouts.map((workout) => workout.coords);
     this._map.fitBounds(allCoords, { padding: MAP_PADDING });

@@ -1,14 +1,15 @@
 import { AJAX } from './helper.js';
+import { SORT_TOGGLE, EDIT_TOGGLE } from './config.js';
 
 export const state = {
   workouts: [],
-  edit: false,
+  edit: EDIT_TOGGLE,
+  sort: true,
 };
 
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
-  sortToggle = false; // TRUE = DISTANCE, FALSE = DATE
 
   constructor(coords, distance, duration) {
     this.coords = coords; // [lat, lng]
@@ -105,5 +106,3 @@ export const getLocalStorage = function () {
 export const clearLocalStorage = function () {
   localStorage.removeItem('workouts');
 };
-
-// clearLocalStorage();
