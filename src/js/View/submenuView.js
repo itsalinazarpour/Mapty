@@ -108,6 +108,10 @@ class SubmenuView extends View {
   }
 
   sortWorkout(workouts, sortBoolean) {
+    // HIDE WORKOUT LISTS
+    const workoutLists = document.querySelectorAll('.workout');
+    workoutLists.forEach((workout) => (workout.style.display = 'none'));
+
     if (sortBoolean) workouts.sort((a, b) => a.distance - b.distance);
     //prettier-ignore
     if(!sortBoolean) workouts.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

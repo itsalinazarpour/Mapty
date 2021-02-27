@@ -4,7 +4,7 @@ import { SORT_TOGGLE, EDIT_TOGGLE } from './config.js';
 export const state = {
   workouts: [],
   edit: EDIT_TOGGLE,
-  sort: true,
+  sort: SORT_TOGGLE,
 };
 
 class Workout {

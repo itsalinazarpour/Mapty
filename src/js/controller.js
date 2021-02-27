@@ -88,6 +88,7 @@ const controlWorkoutMenu = function (workoutEl, menuItem) {
   if (menuItem === null) return; // Guard clause
   const workout = findWorkout(model.state.workouts, workoutEl);
 
+  // CLICK ON EDIT BUTTON
   if (menuItem.classList.contains('menu__item--edit')) {
     workoutListsView.showEditForm(workout);
     workoutListsView.defaultElevationField();
@@ -97,6 +98,7 @@ const controlWorkoutMenu = function (workoutEl, menuItem) {
     //   this._map.on('click', this._showBrandNewForm.bind(this));
     // }
   }
+
   // CLICK ON DELETE BUTTON, DELETE THE WORKOUT
   if (menuItem.classList.contains('menu__item--delete')) {
     submenuView.deleteWorkout(workout, workoutEl);
@@ -115,13 +117,17 @@ const controlWorkoutMenu = function (workoutEl, menuItem) {
     model.state.workouts = [];
     model.setLocalStorage(model.state.workouts);
   }
-  // CLICK ON SORT BUTTON, SORT LISTS BY DISTANCE AND CLICK AGAIN BY TIME
+
+  // CLICK ON SORT BUTTON,
   if (menuItem.classList.contains('menu__item--sort')) {
-    submenuView.deleteAllWorkouts();
+    // 1. HIDE WORKOUT LISTS AND SORT LISTS BY DISTANCE AND CLICK AGAIN BY TIME
     submenuView.sortWorkout(model.state.workouts, model.state.sort);
-    model.setLocalStorage(model.state.workouts);
-    loadWorkouts(model.state.workouts);
     model.state.sort = !model.state.sort;
+    // 2. MANIPULATING WORKOUTS DATA AND SET VIEW
+    model.setLocalStorage(model.state.workouts);
+    mapView.setZoomAndFit(model.state.workouts);
+    // 3. RERENDER WORKOUTS
+    loadWorkouts(model.state.workouts);
   }
 
   submenuView.hideMenu();
