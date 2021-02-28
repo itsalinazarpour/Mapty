@@ -1,6 +1,6 @@
 # Mapty with Jin
 
-**Here is my [Mapty]() project with some additional features!!**
+**Here is my [Mapty](mapty-jin.netlify.app) project with some additional features!!**
 
 **`Somehow the map from leaflet is only showing on firefox`**, So you should open and take a look this project on firefox :wink:
 
@@ -13,14 +13,14 @@
 - Position the map to **show all workouts**
 - **Using Mapty Icons** instead of just normal points on the map
 - **Geocode location** from coordinates and display it on the workout list
-- **Display weather** for workout time and place
+- **Display weather** for workout time and place 
 
 ## Built with
 
 - [Html](https://html.com/), [Sass](https://sass-lang.com/), [VanillaJS](https://www.javascript.com/)
 
 - Generate map from [leaflet](https://leafletjs.com/) library
-- Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API
+- Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API, **API is expired (no more display weather)**
 - GeoCode location data from [geocode.xyz](https://geocode.xyz/) API
 - Icons from [icomoon.io](icomoon.io)
 
