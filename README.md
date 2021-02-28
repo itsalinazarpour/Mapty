@@ -1,12 +1,14 @@
 # Mapty with Jin
 
-**Here is my [Mapty](https://mapty-jin.netlify.app) project with some additional features!!** :wink:
+**Here is my [Mapty](https://mapty-jin.netlify.app) project!**:wink: 
+
+Take a look this project with the features down below. 
 
 
 ## What I did in this project
 
 - **Rebuild** project with **MVC pattern** and **Scss**
-- Design as a **responsive** web 
+- Design as a **Responsive** web 
 - **Markup** and **styling** for new created **submenus** & realistic **error message**
 - Abilities to **edit** & **delete** workout and **delete all** workouts
 - Ability to **sort** workouts by certain fields(distance, time)
