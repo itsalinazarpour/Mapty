@@ -23,6 +23,7 @@
 - Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API, **API is expired (no more display weather)**
 - GeoCode location data from [geocode.xyz](https://geocode.xyz/) API
 - Icons from [icomoon.io](icomoon.io)
+- Deploy by [netlify.com](https://www.netlify.com/)
 
 ## Contact
 
