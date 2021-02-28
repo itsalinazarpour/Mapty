@@ -1,5 +1,4 @@
 import 'core-js/stable';
-// // FOR ASYNC POLIFILLING ASYNC FUNCTION
 import 'regenerator-runtime/runtime';
 import 'leaflet';
 
@@ -8,7 +7,7 @@ import View from './View.js';
 import workoutListsView from './workoutListsView.js';
 
 // prettier-ignore
-import { MAP_ZOOM_LEVEL, ICON_SIZE, ICON_ANCHOR, POPUP_ANCHOR, POPUP_MAX_WIDTH, POPUP_MIN_WIDTH, POPUP_AUTO_CLOSE, POPUP_CLOSE_ON_CLICK, MAP_PADDING} from './../config.js';
+import { MAP_ZOOM_LEVEL, ICON_SIZE, ICON_ANCHOR, POPUP_ANCHOR, POPUP_MAX_WIDTH, POPUP_MIN_WIDTH, POPUP_AUTO_CLOSE, POPUP_CLOSE_ON_CLICK, MAP_PADDING, PAN_DURATION_SEC, ANIMATE} from './../config.js';
 import { setDescription } from '../helper.js';
 
 class MapView extends View {
@@ -29,7 +28,7 @@ class MapView extends View {
   }
 
   // LOAD MAP FROM LEAFLET LIBRARY, SHOW MARKERS FROM LOCAL STORAGE || SHOW FORM BY CLICKING
-  loadMap(position, workouts) {
+  loadMap(position, workouts, handler) {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
     const coords = [latitude, longitude];
@@ -42,7 +41,7 @@ class MapView extends View {
     }).addTo(this._map);
 
     // SHOW FORM BY CLICKING ON MAP
-    this._map.on('click', workoutListsView.showForm.bind(workoutListsView));
+    this.addHandlerClick(workoutListsView.showForm.bind(workoutListsView));
 
     // IF LOCAL STORAGE IS EMPTY RETURN IMMEDIATELY
     if (workouts.length === 0) return;
@@ -54,9 +53,11 @@ class MapView extends View {
     this.setZoomAndFit(workouts);
   }
 
-  renderWorkoutMarker(workout) {
-    // const workout = workouts[workouts.length - 1];
+  addHandlerClick(handler) {
+    this._map.on('click', handler);
+  }
 
+  renderWorkoutMarker(workout) {
     const myIcon = L.icon({
       iconUrl: logoIcon,
       iconSize: ICON_SIZE,
@@ -81,7 +82,6 @@ class MapView extends View {
   }
 
   setZoomAndFit(workouts) {
-    // if(workouts.length === 0) return
     if (workouts.length === 1) return this.setViewToPopup(workouts[0]);
 
     const allCoords = workouts.map((workout) => workout.coords);
@@ -90,9 +90,9 @@ class MapView extends View {
 
   setViewToPopup(workout) {
     this._map.setView(workout.coords, this._mapZoomLevel, {
-      animate: true,
+      animate: ANIMATE,
       pan: {
-        duration: 1,
+        duration: PAN_DURATION_SEC,
       },
     });
   }

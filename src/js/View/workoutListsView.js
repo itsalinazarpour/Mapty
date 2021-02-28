@@ -1,10 +1,8 @@
 import 'core-js/stable';
-// // FOR ASYNC POLIFILLING ASYNC FUNCTION
 import 'regenerator-runtime/runtime';
 import 'leaflet';
 
 import icons from 'url:../../svg/sprite.svg';
-// import logoIcon from 'url:../img/icon.png';
 
 import View from './View.js';
 import { isNumber, isPositive, setDescription } from '../helper.js';
@@ -91,6 +89,42 @@ class WorkoutListsView extends View {
     this._hideForm();
   }
 
+  editWorkout(workout) {
+    const type = this._inputType.value;
+    const duration = +this._inputDuration.value;
+    const distance = +this._inputDistance.value;
+    const cadence = +this._inputCadence.value;
+    const elevation = +this._inputElevation.value;
+
+    // SET INPUT VALUE IN LOCAL STORAGE
+    workout.type = type;
+    workout.duration = duration;
+    workout.distance = distance;
+
+    if (type === 'running') {
+      if (
+        !isNumber(duration, distance, cadence) ||
+        !isPositive(duration, distance, cadence)
+      )
+        return this._displayErrorMsg();
+
+      workout.cadence = cadence;
+      workout.pace = duration / distance;
+    }
+    if (type === 'cycling') {
+      if (
+        !isNumber(duration, distance, elevation) ||
+        !isPositive(duration, distance)
+      )
+        return this._displayErrorMsg();
+
+      workout.elevationGain = elevation;
+      workout.speed = distance / (duration / 60);
+    }
+
+    this._hideForm();
+  }
+
   async renderWorkout(workout, geoData, weatherData) {
     try {
       const geo = await geoData;
@@ -144,7 +178,6 @@ class WorkoutListsView extends View {
   }
 
   _hideForm() {
-    // CLEAR INPUT FIELDS
     this._clearInputFields();
 
     // TRICK TO PREVENT ANIMATION

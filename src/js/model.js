@@ -5,6 +5,7 @@ export const state = {
   workouts: [],
   edit: EDIT_TOGGLE,
   sort: SORT_TOGGLE,
+  workoutElememt: '',
 };
 
 class Workout {
@@ -68,7 +69,7 @@ export const getGeoCode = async function (workout) {
 
     return data.osmtags.name;
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     return '';
   }
 };
@@ -88,7 +89,8 @@ export const getWeatherData = async function (workout) {
 
     return `http://openweathermap.org/img/wn/${icon}@2x.png`;
   } catch (err) {
-    throw err;
+    console.error(err);
+    return '';
   }
 };
 
@@ -101,8 +103,4 @@ export const getLocalStorage = function () {
 
   if (!data) return;
   state.workouts = data;
-};
-
-export const clearLocalStorage = function () {
-  localStorage.removeItem('workouts');
 };

@@ -1,4 +1,6 @@
 export const MAP_ZOOM_LEVEL = 13;
+export const PAN_DURATION_SEC = 1;
+export const ANIMATE = true;
 
 export const ICON_SIZE = [46, 46];
 export const ICON_ANCHOR = [22, 94];

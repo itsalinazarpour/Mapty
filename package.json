@@ -1,7 +1,7 @@
 {
   "name": "mapty",
   "version": "1.0.0",
-  "main": "index.html",
+  "default": "index.html",
   "dependencies": {
     "core-js": "^3.8.3",
     "leaflet": "^1.7.1",
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --dist-dir ./dist"
   },
   "repository": {
     "type": "git",

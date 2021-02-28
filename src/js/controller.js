@@ -10,8 +10,6 @@ import submenuView from './View/submenuView.js';
 
 import { findWorkout, findWorkoutPopup } from './helper.js';
 
-let sort1 = true;
-
 // GET POSITION FROM GEO API AND CONTROL MAP
 const controlMap = function () {
   if (navigator.geolocation)
@@ -39,20 +37,32 @@ const controlWorkout = function () {
       model.getWeatherData(workout)
     );
 
-    // RENDER WORKOUT ON MAP AS A MARKER
+    // RENDER WORKOUT ON MAP AS A MARKER AND SET WORKOUT TO LOCAL STORAGE
     mapView.renderWorkoutMarker(workout);
-
-    // SET WORKOUT TO LOCAL STORAGE
     model.setLocalStorage(model.state.workouts);
   }
+
   if (model.state.edit) {
-    workoutListsView.editWorkout(this._selectedWorkout);
+    // prettier-ignore
+    const workout = findWorkout(model.state.workouts, model.state.workoutElement);
+
+    // EDIT WORKOUT AND SET THE EDITED WORKOUT TO LOCAL STORAGE
+    workoutListsView.editWorkout(workout);
+    model.setLocalStorage(model.state.workouts);
+
+    // DELETE WORKOUT LISTS, POPUP AND RERENDER WORKOUT LISTS, POPUP WITH EDITED DATA
+    submenuView.deleteAllWorkouts();
+    model.state.edit = false;
+    mapView.setZoomAndFit(model.state.workouts);
+    model.state.workouts.forEach((work) => mapView.renderWorkoutMarker(work));
+    loadWorkouts(model.state.workouts);
   }
 };
 
 const loadWorkouts = async function (workouts) {
   if (workouts.length === 0) return;
 
+  // RENDER WORKOUT LISTS ASYNCRONIZELY
   for (const workout of workouts) {
     await workoutListsView.renderWorkout(
       workout,
@@ -60,14 +70,6 @@ const loadWorkouts = async function (workouts) {
       model.getWeatherData(workout)
     );
   }
-
-  // workouts.forEach((workout) =>
-  //   workoutListsView.renderWorkout(
-  //     workout,
-  //     model.getGeoCode(workout),
-  //     model.getWeatherData(workout)
-  //   )
-  // );
 };
 
 // CLICK ON LIST, SET VIEW TO CORRESPONDING POPUP
@@ -84,9 +86,15 @@ const controlSetViewToPopup = function (popup) {
   mapView.setViewToPopup(workout);
 };
 
+const controlEdit = function () {
+  workoutListsView.showForm.bind(workoutListsView);
+  model.state.edit = false;
+};
+
 const controlWorkoutMenu = function (workoutEl, menuItem) {
   if (menuItem === null) return; // Guard clause
   const workout = findWorkout(model.state.workouts, workoutEl);
+  model.state.workoutElement = workoutEl;
 
   // CLICK ON EDIT BUTTON
   if (menuItem.classList.contains('menu__item--edit')) {
@@ -94,15 +102,15 @@ const controlWorkoutMenu = function (workoutEl, menuItem) {
     workoutListsView.defaultElevationField();
     model.state.edit = true;
 
-    // if (model.state.edit) {
-    //   this._map.on('click', this._showBrandNewForm.bind(this));
-    // }
+    // OPEN NEW FORM, WHEN EDIT FORM IS OPENED
+    mapView.addHandlerClick(controlEdit);
   }
 
   // CLICK ON DELETE BUTTON, DELETE THE WORKOUT
   if (menuItem.classList.contains('menu__item--delete')) {
     submenuView.deleteWorkout(workout, workoutEl);
 
+    // DELETE LIST FROM WORKOUT ARRAY AND LOCAL STORAGE
     model.state.workouts = model.state.workouts.filter(
       (work) => work.id !== workout.id
     );
@@ -120,13 +128,13 @@ const controlWorkoutMenu = function (workoutEl, menuItem) {
 
   // CLICK ON SORT BUTTON,
   if (menuItem.classList.contains('menu__item--sort')) {
-    // 1. HIDE WORKOUT LISTS AND SORT LISTS BY DISTANCE AND CLICK AGAIN BY TIME
+    // HIDE WORKOUT LISTS AND SORT LISTS BY DISTANCE AND CLICK AGAIN BY TIME
     submenuView.sortWorkout(model.state.workouts, model.state.sort);
     model.state.sort = !model.state.sort;
-    // 2. MANIPULATING WORKOUTS DATA AND SET VIEW
+
+    // MANIPULATING WORKOUTS DATA AND SET VIEW AND RERENDER WORKOUTS
     model.setLocalStorage(model.state.workouts);
     mapView.setZoomAndFit(model.state.workouts);
-    // 3. RERENDER WORKOUTS
     loadWorkouts(model.state.workouts);
   }
 

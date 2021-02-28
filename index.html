@@ -20,21 +20,8 @@
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""
     />
-    <script
-      defer
-      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-      crossorigin=""
-    ></script>
 
-    <script
-      defer
-      src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-      crossorigin=""
-    ></script>
-
-    <script defer src="src/js/script.js"></script>
+    <script defer src="src/js/controller.js"></script>
   </head>
 
   <body>
@@ -42,12 +29,7 @@
     <div class="error-window hidden">
       <h2 class="error__heading">⚠️ Error ⚠️</h2>
 
-      <p class="error__text">
-        ⚠️ Characters or Symbols and Negative Numbers are NOT allowed for
-        inputs. ⚠️<br />
-        Only Positive Numbers are permitted unless elevation field. <br />
-        On elevation input, Negative number is good to put!😄
-      </p>
+      <p class="error__text"></p>
       <button class="error__btn--close">❌</button>
     </div>
     <aside class="side-bar">

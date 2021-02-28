@@ -1,10 +1,6 @@
 import 'core-js/stable';
-// // FOR ASYNC POLIFILLING ASYNC FUNCTION
 import 'regenerator-runtime/runtime';
 import 'leaflet';
-
-import icons from 'url:../../svg/sprite.svg';
-import logoIcon from 'url:../../img/icon.png';
 
 import View from './View.js';
 import { findPopupByClassName, findMarkerByClassName } from '../helper.js';
@@ -44,23 +40,6 @@ class SubmenuView extends View {
     });
   }
 
-  _controlMenu(e) {
-    // CLICK ON DELETE BUTTON, DELETE THE WORKOUT
-    if (menuItem.classList.contains('menu__item--delete'))
-      this._deleteWorkout(e);
-
-    // CLICK ON CLEAR BUTTON, CLEAR ALL
-    if (menuItem.classList.contains('menu__item--clear'))
-      this._clearLocalStorage();
-
-    // CLICK ON SORT BUTTON, SORT LISTS BY DISTANCE
-    if (menuItem.classList.contains('menu__item--sort')) {
-      this._sortWorkout(this._selectedWorkout);
-    }
-
-    this._closeMenu();
-  }
-
   // DELETE LIST FROM LOCAL STORAGE AND WORKOUT ARRAY
   deleteWorkout(workout, workoutEl) {
     // [...BLAH] = ARRAY.FROM(BLAH)  CONVERTING DOM TO ARR
@@ -86,6 +65,12 @@ class SubmenuView extends View {
     workouts.forEach((workout) => (workout.style.display = 'none'));
   }
 
+  // HIDE WORKOUT LISTS
+  deleteWorkoutLists() {
+    const workoutLists = document.querySelectorAll('.workout');
+    workoutLists.forEach((workout) => (workout.style.display = 'none'));
+  }
+
   hideMenu() {
     const menus = this._parentEl.querySelectorAll('.menu');
 
@@ -108,9 +93,7 @@ class SubmenuView extends View {
   }
 
   sortWorkout(workouts, sortBoolean) {
-    // HIDE WORKOUT LISTS
-    const workoutLists = document.querySelectorAll('.workout');
-    workoutLists.forEach((workout) => (workout.style.display = 'none'));
+    this.deleteWorkoutLists();
 
     if (sortBoolean) workouts.sort((a, b) => a.distance - b.distance);
     //prettier-ignore
