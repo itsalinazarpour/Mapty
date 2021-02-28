@@ -1,6 +1,6 @@
 # Mapty with Jin
 
-**Here is my [Mapty](mapty-jin.netlify.app) project with some additional features!!**
+**Here is my [Mapty](https://mapty-jin.netlify.app) project with some additional features!!**
 
 **`Somehow the map from leaflet is only showing on firefox`**, So you should open and take a look this project on firefox :wink:
 
