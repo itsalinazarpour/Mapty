@@ -5,7 +5,7 @@
 ## What I did in this project
 
 - **Rebuild** project with **MVC pattern** and **Scss**
-- **Responsive** style 
+- Design as a **responsive** web 
 - **Markup** and **styling** for new created **submenus** & realistic **error message**
 - Abilities to **edit** & **delete** workout and **delete all** workouts
 - Ability to **sort** workouts by certain fields(distance, time)
