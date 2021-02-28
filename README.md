@@ -7,7 +7,7 @@
 ## What I did in this project
 
 - **Rebuild** project with **MVC pattern** and **Scss**
-- **Markup** and **styling** for new created **submenus** && realistic **error message**
+- **Markup** and **styling** for new created **submenus** & realistic **error message**
 - Abilities to **edit** & **delete** workout and **delete all** workouts
 - Ability to **sort** workouts by certain fields(distance, time)
 - Position the map to **show all workouts**
