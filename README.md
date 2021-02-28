@@ -21,11 +21,10 @@
 - [Sass](https://sass-lang.com/)
 - [VanillaJS](https://www.javascript.com/)
 
-## References
-
--
--
--
+- Generate map from [leaflet](https://leafletjs.com/) library
+- Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API
+- GeoCode location data from [geocode.xyz](https://geocode.xyz/) API
+- Icons from [icomoon.io](icomoon.io)
 
 ## Contact
 
@@ -33,4 +32,4 @@ Myoung Jin Jang - [thinkjin6@gmail.com](https://www.google.com/gmail/about/)
 
 ## License
 
-Make sure you know that **This project is based on [Jonas Schmedtmann](https://github.com/jonasschmedtmann)'s [Mapty](https://mapty.netlify.app/).**
+Make sure you know that **This project is based on [Jonas Schmedtmann](https://github.com/jonasschmedtmann)'s [Mapty](https://mapty.netlify.app/) project.**
