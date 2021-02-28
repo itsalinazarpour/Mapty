@@ -2,11 +2,11 @@
 
 **Here is my [Mapty]() project with some additional features!!**
 
-<span style="color: red;">`Somehow the map from leaflet is only showing on firefox`</span>, So you should open and take a look this project on firefox :wink:
+<span style="color: red;">`Somehow the map from leaflet is only showing on firefox</span>`, So you <span style="color: red;">should</span> open and take a look this project on firefox :wink:
 
 ## What I did in this project
 
-- **Rebuild** project with **MVC pattern** and **Sass**
+- **Rebuild** project with **MVC pattern** and **Scss**
 - **Markup** and **styling** for new created **submenus** && realistic **error message**
 - Abilities to **edit** & **delete** workout and **delete all** workouts
 - Ability to **sort** workouts by certain fields(distance, time)
@@ -19,7 +19,7 @@
 
 - [Html](https://html.com/)
 - [Sass](https://sass-lang.com/)
-- [Vanilla_JavaScript](https://www.javascript.com/)
+- [VanillaJS](https://www.javascript.com/)
 
 ## References
 
