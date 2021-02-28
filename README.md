@@ -2,7 +2,7 @@
 
 **Here is my [Mapty]() project with some additional features!!**
 
-<span style="color:red">`Somehow the map from leaflet is only showing on firefox`</span>, So you should open and take a look this project on firefox :wink:
+<span style="color: red;">`Somehow the map from leaflet is only showing on firefox`</span>, So you should open and take a look this project on firefox :wink:
 
 ## What I did in this project
 
