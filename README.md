@@ -1,12 +1,11 @@
 # Mapty with Jin
 
-**Here is my [Mapty](https://mapty-jin.netlify.app) project with some additional features!!**
-
-**`Somehow the map from leaflet is only showing on firefox`**, So you should open and take a look this project on firefox :wink:
+**Here is my [Mapty](https://mapty-jin.netlify.app) project with some additional features!!** :wink:
 
 ## What I did in this project
 
 - **Rebuild** project with **MVC pattern** and **Scss**
+- **Responsive** style 
 - **Markup** and **styling** for new created **submenus** & realistic **error message**
 - Abilities to **edit** & **delete** workout and **delete all** workouts
 - Ability to **sort** workouts by certain fields(distance, time)
