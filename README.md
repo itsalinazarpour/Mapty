@@ -16,6 +16,8 @@ Take a look this project with the features down below.
 - **Using Mapty Icons** instead of just normal points on the map
 - **Geocode location** from coordinates and display it on the workout list
 - **Display weather** for workout time and place 
+- Click on popup, **move map** to corresponding popup
+- Map Zoom and View control
 
 
 ## Built with
