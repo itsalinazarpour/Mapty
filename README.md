@@ -23,7 +23,7 @@ Take a look this project with the features down below.
 - [Html](https://html.com/), [Sass](https://sass-lang.com/), [VanillaJS](https://www.javascript.com/)
 
 - Generate map from [leaflet](https://leafletjs.com/) library
-- Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API, **API is expired (no more display weather)**
+- Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API
 - GeoCode location data from [geocode.xyz](https://geocode.xyz/) API
 - Icons from [icomoon.io](https://icomoon.io/)
 - Deploy by [netlify.com](https://www.netlify.com/)
