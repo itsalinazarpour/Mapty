@@ -23,6 +23,7 @@ Take a look this project with the features down below.
 ## Built with
 
 - [Html](https://html.com/), [Sass](https://sass-lang.com/), [VanillaJS](https://www.javascript.com/)
+- [Parcel](https://parceljs.org/), [Babel](https://babeljs.io/)
 
 - Generate map from [leaflet](https://leafletjs.com/) library
 - Weather data and icons from [OpenWeatherMap](https://openweathermap.org/) API
