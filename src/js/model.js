@@ -81,13 +81,13 @@ export const getWeatherData = async function (workout) {
     const [lat, lng] = workout.coords;
 
     const data = await AJAX(
-      `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}`,
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}`,
       'Failed to load data from API'
     );
 
     const { icon } = data.weather[0];
 
-    return `http://openweathermap.org/img/wn/${icon}@2x.png`;
+    return `https://openweathermap.org/img/wn/${icon}@2x.png`;
   } catch (err) {
     console.error(err);
     return '';
