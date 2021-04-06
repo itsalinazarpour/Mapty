@@ -1,6 +1,7 @@
 # Mapty with Jin
 
 **Here is my [Mapty](https://mapty-jin.netlify.app) project!**:wink: [live demo](https://mapty-jin.netlify.app)
+![picture](./src/img/mapty.png)
 
 Take a look this project with the features down below. 
 
